@@ -64,7 +64,9 @@ export const StyledSideContent = styled.div`
     background-color: var(--heading-background-light);
     cursor: pointer;
   }
-
+  .filter-search button:hover {
+    transform: scale(0.9);
+  }
   .skill-list {
     margin-top: 10px;
     display: flex;

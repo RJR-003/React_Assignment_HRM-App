@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Header from "../components/Header/header";
+import Header from "../components/header/Header";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

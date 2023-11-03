@@ -4,8 +4,11 @@ export const StyledHeader = styled.header`
   background-color: #3d3d46;
   display: flex;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 4;
 
-  height: 50px;
+  height: 70px;
   div {
     width: 1440px;
     margin: 0 auto;

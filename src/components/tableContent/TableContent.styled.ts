@@ -7,12 +7,16 @@ export const StyledTableContent = styled.div`
   margin-top: 90px;
   flex: 1;
 
-  .table-container > button {
+  & > button {
     background-color: var(--text-color);
     border: none;
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 15px;
+    box-shadow: 1px 1px 10px var(--box-shadow);
+  }
+  & > button:hover {
+    transform: scale(0.9);
   }
 
   table {
@@ -78,6 +82,9 @@ export const StyledTableContent = styled.div`
     background-color: transparent;
     cursor: pointer;
     margin: 0 10px;
+  }
+  #action-button-cell button:hover {
+    transform: scale(1.2);
   }
 
   .sort-button {
