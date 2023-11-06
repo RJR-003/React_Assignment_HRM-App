@@ -9,7 +9,7 @@ const router = createBrowserRouter(
     { path: "/view-employee", element: <EmpDetails /> },
     { path: "/add-update-employee", element: <AddUpdateEmp /> },
   ],
-  { basename: import.meta.env.DEV ? "/" : "/React_Assignment_HRM-App /" }
+  { basename: import.meta.env.DEV ? "/" : "/React_Assignment_HRM-App/" }
 );
 
 export default router;
