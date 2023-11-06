@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const StyledSideContent = styled.div`
+export const StyledFilterSectionContent = styled.div`
   margin-top: 60px;
 
   .search-box {
     position: relative;
   }
 
-  .search-box > input {
+  .search-box > div > input {
     width: 98%;
     padding: 10px;
     border-radius: 10px;
@@ -15,7 +15,7 @@ export const StyledSideContent = styled.div`
     box-shadow: 1px 1px 10px var(--box-shadow);
   }
 
-  .search-box > img {
+  .search-box > div > img {
     position: absolute;
     right: 15px;
     top: 4px;

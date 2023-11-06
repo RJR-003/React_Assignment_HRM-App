@@ -7,7 +7,7 @@ export const StyledTableContent = styled.div`
   margin-top: 90px;
   flex: 1;
 
-  & > button {
+  & > a > button {
     background-color: var(--text-color);
     border: none;
     border-radius: 10px;
@@ -15,7 +15,7 @@ export const StyledTableContent = styled.div`
     margin-bottom: 15px;
     box-shadow: 1px 1px 10px var(--box-shadow);
   }
-  & > button:hover {
+  & > a > button:hover {
     transform: scale(0.9);
   }
 

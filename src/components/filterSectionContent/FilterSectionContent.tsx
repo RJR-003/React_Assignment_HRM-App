@@ -1,4 +1,4 @@
-import { StyledSideContent } from "./SideContent.styled";
+import { StyledFilterSectionContent } from "./FilterSectionContent.style";
 import searchIcon from "../../assets/images/search-logo.svg";
 import filterLogo from "../../assets/images/filter-logo.svg";
 import clrFilterLogo from "../../assets/images/clear-filter.svg";
@@ -13,9 +13,9 @@ let tempSkills: string[] = [
   "HTML/CSS",
 ];
 
-export default function SideContent() {
+export default function FilterSectionContent() {
   return (
-    <StyledSideContent>
+    <StyledFilterSectionContent>
       <form className="search-box">
         <InputField
           type="text"
@@ -37,13 +37,13 @@ export default function SideContent() {
         </div>
         <div className="skill-list">
           {tempSkills.map((item) => (
-            <div className="skill-element">
+            <div key={item} className="skill-element">
               <input type="checkbox" />
               <label>{item}</label>
             </div>
           ))}
         </div>
       </div>
-    </StyledSideContent>
+    </StyledFilterSectionContent>
   );
 }

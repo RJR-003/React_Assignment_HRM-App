@@ -2,6 +2,15 @@ import { StyledViewPage } from "./EmpDetails.style";
 import testPhoto from "../../assets/images/person1.jpeg";
 
 export default function EmpDetails() {
+  const leftViewContent: string[] = [
+    "Employee ID:",
+    "Name:",
+    "E-mail:",
+    "Date of Join",
+    "Date of Birth: ",
+  ];
+  const rightViewContent: string[] = ["Department", "Role", "Location"];
+
   return (
     <StyledViewPage>
       <div className="data-view-content">
@@ -11,11 +20,9 @@ export default function EmpDetails() {
 
         <div className="left-view-content">
           <div>
-            <p className="view-labels">Employee ID:</p>
-            <p className="view-labels">Name: </p>
-            <p className="view-labels">E-mail: </p>
-            <p className="view-labels">Date Of Join: </p>
-            <p className="view-labels">Date of Birth: </p>
+            {leftViewContent.map((item) => (
+              <p className="view-labels">{item}</p>
+            ))}
           </div>
           <div>
             <p id="empIdView"></p>
@@ -28,9 +35,9 @@ export default function EmpDetails() {
         <div className="right-view-content">
           <div className="right-content">
             <div>
-              <p className="view-labels">Department:</p>
-              <p className="view-labels">Role: </p>
-              <p className="view-labels">Location: </p>
+              {rightViewContent.map((item) => (
+                <p className="view-labels">{item}</p>
+              ))}
             </div>
             <div>
               <p id="depView"></p>

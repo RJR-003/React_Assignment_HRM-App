@@ -5,6 +5,7 @@ import viewImgIcon from "../../assets/images/view-img.svg";
 import editImgIcon from "../../assets/images/edit-img.svg";
 import delImgIcon from "../../assets/images/del-img.svg";
 import Button from "../button/Button";
+import { Link } from "react-router-dom";
 
 type tempdata = {
   id: number;
@@ -43,7 +44,9 @@ const tempData: tempdata[] = [
 export default function TableContent() {
   return (
     <StyledTableContent>
-      <Button src={addEmpicon} alt="button for adding new employee " />
+      <Link to="/add-update-employee">
+        <Button src={addEmpicon} alt="button for adding new employee " />
+      </Link>
       <table className="table">
         <thead>
           <tr className="heading-row">
@@ -64,8 +67,12 @@ export default function TableContent() {
               <td>{item.email}</td>
               <td>{item.department}</td>
               <td id="action-button-cell">
-                <Button src={viewImgIcon} alt="view button image" />
-                <Button src={editImgIcon} alt="Edit button image" />
+                <Link to="/view-employee">
+                  <Button src={viewImgIcon} alt="view button image" />
+                </Link>
+                <Link to="add-update-employee">
+                  <Button src={editImgIcon} alt="Edit button image" />
+                </Link>
                 <Button src={delImgIcon} alt="Delete button image" />
               </td>
             </tr>

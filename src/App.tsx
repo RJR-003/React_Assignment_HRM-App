@@ -1,12 +1,11 @@
+import { RouterProvider } from "react-router-dom";
 import Layout from "./layout/Layout";
-import Home from "./pages/home/Home";
-// import EmpDetails from "./pages/emp_Details/EmpDetails";
+import router from "./core/routing/Router";
 
 function App() {
   return (
     <Layout>
-      <Home />
-      {/* <EmpDetails /> */}
+      <RouterProvider router={router}></RouterProvider>
     </Layout>
   );
 }

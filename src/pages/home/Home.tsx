@@ -1,11 +1,11 @@
-import SideContent from "../../components/sideContent/SideContent";
+import FilterSectionContent from "../../components/filterSectionContent/FilterSectionContent";
 import TableContent from "../../components/tableContent/TableContent";
 import { StyledHome } from "./Home.styled";
 
 export default function Home() {
   return (
     <StyledHome>
-      <SideContent />
+      <FilterSectionContent />
       <TableContent />
     </StyledHome>
   );

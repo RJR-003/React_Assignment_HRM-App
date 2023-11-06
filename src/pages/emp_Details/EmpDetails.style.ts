@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
 export const StyledViewPage = styled.div`
-  width: 1420px;
-  margin: 0 auto;
+  position: fixed;
+  /* position: absolute; */
+  max-width: max-content;
+  /* top: 30%;
+    left: 30%; */
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
   height: auto;
   padding: 30px;
   z-index: 2;
@@ -13,6 +19,7 @@ export const StyledViewPage = styled.div`
   & > figure {
     width: fit-content;
     height: auto;
+    margin-left: 0;
   }
 
   & > img {
@@ -55,7 +62,6 @@ export const StyledViewPage = styled.div`
     border-radius: 5px;
     align-self: flex-start;
   }
-
   .view-labels {
     width: max-content;
     font-weight: 600;
@@ -66,10 +72,6 @@ export const StyledViewPage = styled.div`
   }
 
   .view-skill-box {
-    overflow-y: scroll;
-  }
-
-  .added-skills {
     overflow-y: scroll;
   }
 `;
