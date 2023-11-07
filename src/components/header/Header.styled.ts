@@ -14,6 +14,8 @@ export const StyledHeader = styled.header`
     margin: 0 auto;
   }
   div > h1 {
+    cursor: pointer;
+
     font-size: 15px;
     width: max-content;
     color: #fff;

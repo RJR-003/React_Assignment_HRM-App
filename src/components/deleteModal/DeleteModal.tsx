@@ -1,10 +1,11 @@
 import { StyledDeleteModal } from "./DeleteModal.style";
+import { constants } from "../../core/config/constants";
 
 function DeleteModal() {
   return (
     <StyledDeleteModal>
       <div className="del-conf-msg">
-        <p>Are you sure you want to proceed with the action?</p>
+        <p>{constants.delMsg}</p>
       </div>
       <div className="del-conf-buttons">
         <button className="confirm-button">Confirm</button>

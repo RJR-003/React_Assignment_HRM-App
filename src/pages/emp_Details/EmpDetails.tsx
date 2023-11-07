@@ -1,5 +1,6 @@
 import { StyledViewPage } from "./EmpDetails.style";
 import testPhoto from "../../assets/images/person1.jpeg";
+import SkillChip from "../../components/skillChip/SkillChip";
 
 export default function EmpDetails() {
   const leftViewContent: string[] = [
@@ -21,7 +22,9 @@ export default function EmpDetails() {
         <div className="left-view-content">
           <div>
             {leftViewContent.map((item) => (
-              <p className="view-labels">{item}</p>
+              <p key={item} className="view-labels">
+                {item}
+              </p>
             ))}
           </div>
           <div>
@@ -36,7 +39,9 @@ export default function EmpDetails() {
           <div className="right-content">
             <div>
               {rightViewContent.map((item) => (
-                <p className="view-labels">{item}</p>
+                <p key={item} className="view-labels">
+                  {item}
+                </p>
               ))}
             </div>
             <div>
@@ -47,7 +52,10 @@ export default function EmpDetails() {
           </div>
           <div className="view-skill-sec">
             <p className="view-labels">Skills</p>
-            <div className="view-skill-box"></div>
+            <div className="view-skill-box">
+              <SkillChip>Skill 1</SkillChip>
+              <SkillChip>Skill 2</SkillChip>
+            </div>
           </div>
         </div>
       </div>

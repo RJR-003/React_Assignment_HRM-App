@@ -44,7 +44,7 @@ const tempData: tempdata[] = [
 export default function TableContent() {
   return (
     <StyledTableContent>
-      <Link to="/add-update-employee">
+      <Link to="/add-employee">
         <Button src={addEmpicon} alt="button for adding new employee " />
       </Link>
       <table className="table">
@@ -59,7 +59,7 @@ export default function TableContent() {
             <th id="last-heading">Actions</th>
           </tr>
         </thead>
-        <tbody className="table-body">
+        <tbody>
           {tempData.map((item) => (
             <tr key={item.id} className="heading-row">
               <td>{item.id}</td>
@@ -70,7 +70,7 @@ export default function TableContent() {
                 <Link to="/view-employee">
                   <Button src={viewImgIcon} alt="view button image" />
                 </Link>
-                <Link to="add-update-employee">
+                <Link to="/update-employee">
                   <Button src={editImgIcon} alt="Edit button image" />
                 </Link>
                 <Button src={delImgIcon} alt="Delete button image" />

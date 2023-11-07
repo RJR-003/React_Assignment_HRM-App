@@ -1,6 +1,8 @@
-import { StyledEntryForm } from "./AddUpdateEmp.style";
+import { StyledEntryForm, StyledEntryFormRow } from "./AddUpdateEmp.style";
 import testEmpProfile from "../../assets/images/profile.png";
 import InputField from "../../components/inputField/InputField";
+import SkillChip from "../../components/skillChip/SkillChip";
+import SelectField from "../../components/selectField/SelectField";
 
 const tempDepartment: string[] = ["Development", "UI", "UX", "BDG"];
 const tempRole: string[] = ["Engineer", "Lead Engineer", "Architect"];
@@ -32,7 +34,7 @@ function AddUpdateEmp() {
           type="email"
           placeholder="Enter E-mail"
         />
-        <div className="entry-form-row">
+        <StyledEntryFormRow>
           <InputField classname="form-entry" label="Date of Join" type="date" />
 
           <InputField
@@ -40,32 +42,30 @@ function AddUpdateEmp() {
             label="Date of Birth"
             type="date"
           />
-        </div>
-        <div className="entry-form-row">
+        </StyledEntryFormRow>
+        <StyledEntryFormRow>
           <div className="form-entry">
             <label htmlFor="dep">Department</label>
-            <select defaultValue="none" id="dep">
-              <option value="none" disabled hidden>
-                select
-              </option>
+            <SelectField id="dep">
               {tempDepartment.map((item) => (
-                <option value={item}>{item}</option>
+                <option key={item} value={item}>
+                  {item}
+                </option>
               ))}
-            </select>
+            </SelectField>
           </div>
 
           <div className="form-entry">
             <label htmlFor="role">Role</label>
-            <select defaultValue="none" id="role">
-              <option value="none" disabled hidden>
-                select
-              </option>
+            <SelectField id="role">
               {tempRole.map((item) => (
-                <option value={item}>{item}</option>
+                <option key={item} value={item}>
+                  {item}
+                </option>
               ))}
-            </select>
+            </SelectField>
           </div>
-        </div>
+        </StyledEntryFormRow>
         <div className="form-location-profile">
           <InputField
             classname="form-entry"
@@ -75,32 +75,30 @@ function AddUpdateEmp() {
           />
           <div className="form-entry">
             <label htmlFor="loc">location</label>
-            <select defaultValue="none" id="loc">
-              <option value="none" disabled hidden>
-                select
-              </option>
+            <SelectField id="loc">
               {tempLoc.map((item) => (
-                <option value={item}>{item}</option>
+                <option key={item} value={item}>
+                  {item}
+                </option>
               ))}
-            </select>
+            </SelectField>
           </div>
         </div>
         <div className="form-skill">
           <div>
             <p>Skills</p>
             <div className="added-skills">
-              <div className="each-skill-added">Skill 1</div>
-              <div className="each-skill-added">Skill 1</div>
+              <SkillChip>Skill 1</SkillChip>
+              <SkillChip>Skill 2</SkillChip>
             </div>
           </div>
-          <select defaultValue="none" name="skill" id="skill">
-            <option value="none" disabled hidden>
-              Choose skill
-            </option>
+          <SelectField id="skill">
             {tempSkills.map((item) => (
-              <option value={item}>{item}</option>
+              <option key={item} value={item}>
+                {item}
+              </option>
             ))}
-          </select>
+          </SelectField>
         </div>
         <input id="data-entry-submit" type="submit" value="Add" />
       </form>

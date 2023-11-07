@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const StyledEntryFormRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const StyledEntryForm = styled.div`
   max-width: 700px;
   margin: 20px auto;
@@ -34,11 +39,6 @@ export const StyledEntryForm = styled.div`
     /* border: 1px solid #999; */
     padding: 7px;
     /* border: none; */
-  }
-
-  .entry-form-row {
-    display: flex;
-    justify-content: space-between;
   }
 
   .form-entry {
@@ -86,18 +86,6 @@ export const StyledEntryForm = styled.div`
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
-  }
-
-  .each-skill-added {
-    padding: 10px 20px;
-    background-color: var(--skillbox);
-    border-radius: 5px;
-    align-self: flex-start;
-    cursor: pointer;
-  }
-
-  .each-skill-added:hover {
-    background-color: var(--skillbox-hover);
   }
 
   .form-skill select {
