@@ -1,8 +1,18 @@
 import { StyledViewPage } from "./EmpDetails.style";
-import testPhoto from "../../assets/images/person1.jpeg";
 import SkillChip from "../../components/skillChip/SkillChip";
+import { testData } from "../../core/config/testData";
+import { useLocation } from "react-router-dom";
+import { employee } from "../../core/config/type";
 
 export default function EmpDetails() {
+  // const [data, setData] = useState({ testData });
+
+  const navigation = useLocation();
+
+  const currId = navigation.pathname.split("/")[2];
+  const currData: employee = testData.employee.find(
+    (item) => item.id == Number(currId)
+  )!;
   const leftViewContent: string[] = [
     "Employee ID:",
     "Name:",
@@ -16,7 +26,7 @@ export default function EmpDetails() {
     <StyledViewPage>
       <div className="data-view-content">
         <figure>
-          <img className="img" src={testPhoto} alt="profile-pic" />
+          <img className="img" src={currData.imageSrc} alt="profile-pic" />
         </figure>
 
         <div className="left-view-content">
@@ -28,11 +38,11 @@ export default function EmpDetails() {
             ))}
           </div>
           <div>
-            <p id="empIdView"></p>
-            <p id="nameView"></p>
-            <p id="emailView"></p>
-            <p id="dojView"></p>
-            <p id="dobView"></p>
+            <p id="empIdView">{currData.id}</p>
+            <p id="nameView">{currData.fullName}</p>
+            <p id="emailView">{currData.email}</p>
+            <p id="dojView">{currData.dateOfJoin}</p>
+            <p id="dobView">{currData.dateOfBirth}</p>
           </div>
         </div>
         <div className="right-view-content">
@@ -45,16 +55,17 @@ export default function EmpDetails() {
               ))}
             </div>
             <div>
-              <p id="depView"></p>
-              <p id="roleView"></p>
-              <p id="locView"></p>
+              <p id="depView">{currData.department}</p>
+              <p id="roleView">{currData.role}</p>
+              <p id="locView">{currData.workLocation}</p>
             </div>
           </div>
           <div className="view-skill-sec">
             <p className="view-labels">Skills</p>
             <div className="view-skill-box">
-              <SkillChip>Skill 1</SkillChip>
-              <SkillChip>Skill 2</SkillChip>
+              {currData.skills.map((item) => (
+                <SkillChip>{item}</SkillChip>
+              ))}
             </div>
           </div>
         </div>

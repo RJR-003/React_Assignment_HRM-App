@@ -5,7 +5,7 @@ import AddUpdateEmp from "../../pages/add_Update_Emp/AddUpdateEmp";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
-  { path: "/view-employee", element: <EmpDetails /> },
+  { path: "/view-employee/:id", element: <EmpDetails /> },
   { path: "/add-employee", element: <AddUpdateEmp /> },
   { path: "/update-employee", element: <AddUpdateEmp /> },
 ]);
