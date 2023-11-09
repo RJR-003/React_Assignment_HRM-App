@@ -1,108 +1,179 @@
 import { StyledEntryForm, StyledEntryFormRow } from "./AddUpdateEmp.style";
 import testEmpProfile from "../../assets/images/profile.png";
-import InputField from "../../components/inputField/InputField";
 import SkillChip from "../../components/skillChip/SkillChip";
-import SelectField from "../../components/selectField/SelectField";
+import { Formik, Form, useField } from "formik";
+import * as Yup from "yup";
 
 const tempDepartment: string[] = ["Development", "UI", "UX", "BDG"];
 const tempRole: string[] = ["Engineer", "Lead Engineer", "Architect"];
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
 const tempSkills: string[] = ["HTML/CSS", "Node", "React", "Angular"];
 
+const TextInput = ({ label, ...props }: any) => {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <input {...field} {...props} />
+      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+    </>
+  );
+};
+const FormSelectField = ({ label, ...props }: any) => {
+  const [field, meta] = useField(props);
+  return (
+    <div>
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <select {...field} {...props} />
+      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+    </div>
+  );
+};
+
 function AddUpdateEmp() {
   return (
-    <StyledEntryForm>
-      <form className="data-entry-form" noValidate>
-        <figure className="data-entry-modal-figure">
-          <img
-            className="data-entry-modal-img"
-            src={testEmpProfile}
-            alt="employee profile"
-          />
-        </figure>
+    <Formik
+      initialValues={{
+        email: "",
+        fullName: "",
+        dob: "",
+        doj: "",
+        profileUpload: "",
+        role: "",
+        Department: "",
+        location: "",
+        skill: "",
+      }}
+      validationSchema={Yup.object({
+        fullName: Yup.string()
+          .max(15, "First name must be less than 15 letters long")
+          .required("Required"),
 
-        <InputField
-          classname="form-entry"
-          label="Full Name"
-          type="text"
-          placeholder="Enter full name"
-        />
+        email: Yup.string()
+          .email("should be a valid email")
+          .required("Required"),
+        doj: Yup.string().required("Required"),
+        dob: Yup.string().required("Required"),
+        role: Yup.string().required("Required"),
+        Department: Yup.string().required("Required"),
+        location: Yup.string().required("Required"),
+        skill: Yup.string().required("Required"),
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
+    >
+      <StyledEntryForm>
+        <Form>
+          <figure className="data-entry-modal-figure">
+            <img
+              className="data-entry-modal-img"
+              src={testEmpProfile}
+              alt="employee profile"
+            />
+          </figure>
 
-        <InputField
-          classname="form-entry"
-          label="E-Mail"
-          type="email"
-          placeholder="Enter E-mail"
-        />
-        <StyledEntryFormRow>
-          <InputField classname="form-entry" label="Date of Join" type="date" />
-
-          <InputField
-            classname="form-entry"
-            label="Date of Birth"
-            type="date"
-          />
-        </StyledEntryFormRow>
-        <StyledEntryFormRow>
           <div className="form-entry">
-            <label htmlFor="dep">Department</label>
-            <SelectField id="dep">
-              {tempDepartment.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </SelectField>
+            <TextInput
+              label="Full Name"
+              name="fullName"
+              type="text"
+              placeholder="Enter full name"
+            />
+          </div>
+          <div className="form-entry">
+            <TextInput
+              label="E-Mail"
+              name="email"
+              type="text"
+              placeholder="Enter your e-mail"
+            />
           </div>
 
-          <div className="form-entry">
-            <label htmlFor="role">Role</label>
-            <SelectField id="role">
-              {tempRole.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+          <StyledEntryFormRow>
+            <div className="form-entry">
+              <TextInput label="Date of Join" name="doj" type="date" />
+            </div>
+            <div className="form-entry">
+              <TextInput label="Date of Birth" type="date" name="dob" />
+            </div>
+          </StyledEntryFormRow>
+          <StyledEntryFormRow>
+            <div className="form-entry">
+              <FormSelectField label="Department" name="Department">
+                <option value="" hidden>
+                  select
                 </option>
-              ))}
-            </SelectField>
-          </div>
-        </StyledEntryFormRow>
-        <div className="form-location-profile">
-          <InputField
-            classname="form-entry"
-            label="Profile-upload"
-            type="file"
-            accept="image/*"
-          />
-          <div className="form-entry">
-            <label htmlFor="loc">location</label>
-            <SelectField id="loc">
-              {tempLoc.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+                {tempDepartment.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </FormSelectField>
+            </div>
+            <div className="form-entry">
+              <FormSelectField label="Role" name="role">
+                <option value="" hidden>
+                  select
                 </option>
-              ))}
-            </SelectField>
-          </div>
-        </div>
-        <div className="form-skill">
-          <div>
-            <p>Skills</p>
-            <div className="added-skills">
-              <SkillChip>Skill 1</SkillChip>
-              <SkillChip>Skill 2</SkillChip>
+                {tempRole.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </FormSelectField>
+            </div>
+          </StyledEntryFormRow>
+          <div className="form-location-profile">
+            <div className="form-entry">
+              <TextInput
+                label="Profile-upload"
+                name="profileUpload"
+                type="file"
+                accept="image/*"
+              />
+            </div>
+
+            <div className="form-entry">
+              <FormSelectField label="Location" name="location">
+                <option value="" hidden>
+                  select
+                </option>
+                {tempLoc.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </FormSelectField>
             </div>
           </div>
-          <SelectField id="skill">
-            {tempSkills.map((item) => (
-              <option key={item} value={item}>
-                {item}
+          <div className="form-skill">
+            <div>
+              <p>Skills</p>
+              <div className="added-skills">
+                <SkillChip>Skill 1</SkillChip>
+                <SkillChip>Skill 2</SkillChip>
+              </div>
+            </div>
+            <FormSelectField name="skill">
+              <option value="" hidden>
+                select
               </option>
-            ))}
-          </SelectField>
-        </div>
-        <input id="data-entry-submit" type="submit" value="Add" />
-      </form>
-    </StyledEntryForm>
+              {tempSkills.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </FormSelectField>
+          </div>
+
+          <button type="submit">submit</button>
+        </Form>
+      </StyledEntryForm>
+    </Formik>
   );
 }
 export default AddUpdateEmp;

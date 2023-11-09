@@ -14,10 +14,13 @@ export const StyledEntryForm = styled.div`
   border-radius: 15px;
   box-shadow: 1px 1px 10px var(--box-shadow);
 
-  & > img {
-    cursor: pointer;
-    width: 13px;
-    height: auto;
+  figure {
+    width: max-content;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px var(--box-shadow);
+  }
+  figure > img {
+    border-radius: 15px;
   }
 
   form {
@@ -95,5 +98,16 @@ export const StyledEntryForm = styled.div`
 
   .form-skill p {
     margin-left: 10px;
+  }
+  button {
+    align-self: center;
+    padding: 10px 30px;
+    border: 1px solid #0000004f;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  button:hover {
+    background-color: var(--submit-button);
+    color: var(--text-color);
   }
 `;
