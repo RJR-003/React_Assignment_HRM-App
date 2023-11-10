@@ -27,7 +27,11 @@ export default function TableContent() {
     <>
       <StyledTableContent>
         <Link to="/add-employee">
-          <Button src={addEmpicon} alt="button for adding new employee " />
+          <Button
+            onClick={() => console.log("clicked add Employee button")}
+            src={addEmpicon}
+            alt="button for adding new employee "
+          />
         </Link>
         <table className="table">
           <thead>
@@ -52,13 +56,18 @@ export default function TableContent() {
                   <td id="action-button-cell">
                     <Link to={`/view-employee/${item.id}`}>
                       <Button
+                        onClick={() => console.log("clicked view button")}
                         src={viewImgIcon}
                         // onClick={() => handleViewClick(item.id)}
                         alt="view button image"
                       />
                     </Link>
                     <Link to={`/update-employee/${item.id}`}>
-                      <Button src={editImgIcon} alt="Edit button image" />
+                      <Button
+                        onClick={() => console.log("clicked edit button")}
+                        src={editImgIcon}
+                        alt="Edit button image"
+                      />
                     </Link>
                     <Button
                       onClick={() => handleDelClick(String(item.id))}

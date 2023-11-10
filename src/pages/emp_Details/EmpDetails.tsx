@@ -64,7 +64,7 @@ export default function EmpDetails() {
             <p className="view-labels">Skills</p>
             <div className="view-skill-box">
               {currData.skills.map((item) => (
-                <SkillChip key={item}>{item}</SkillChip>
+                <SkillChip key={item} label={item} isView={true} />
               ))}
             </div>
           </div>

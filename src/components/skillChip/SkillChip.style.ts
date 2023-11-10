@@ -10,4 +10,9 @@ export const StyledSkillChip = styled.div`
   &:hover {
     background-color: var(--skillbox-hover);
   }
+  .close-img {
+    width: 10px;
+    height: auto;
+    margin-left: 20px;
+  }
 `;

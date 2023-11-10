@@ -1,39 +1,15 @@
 import { StyledEntryForm, StyledEntryFormRow } from "./AddUpdateEmp.style";
 import defaultProfileImg from "../../assets/images/profile.png";
 import SkillChip from "../../components/skillChip/SkillChip";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form } from "formik";
 import { testData } from "../../core/config/testData";
 import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
 import { employee, initialEmpDetails } from "../../core/config/type";
 import { useState } from "react";
-
+import TextInput from "./TextInputWrap";
+import FormSelectField from "./FormSelectFieldWrap";
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
-
-const TextInput = ({ label, ...props }: any) => {
-  const [field, meta] = useField(props);
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <input {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="form-error">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
-const FormSelectField = ({ label, ...props }: any) => {
-  const [field, meta] = useField(props);
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="form-error">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
 
 function AddUpdateEmp() {
   const navigation = useLocation();
@@ -189,8 +165,8 @@ function AddUpdateEmp() {
             <div>
               <p>Skills</p>
               <div className="added-skills">
-                <SkillChip>Skill 1</SkillChip>
-                <SkillChip>Skill 2</SkillChip>
+                <SkillChip label="Skill 1" isView={false} />
+                <SkillChip label="Skill 2" isView={false} />
               </div>
             </div>
             <div className="form-entry">

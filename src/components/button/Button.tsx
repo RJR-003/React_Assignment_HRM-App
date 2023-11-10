@@ -7,7 +7,7 @@ function Button({
   src?: string;
   alt?: string;
   content?: string;
-  onClick?: () => void;
+  onClick: () => void;
 }) {
   return (
     <button onClick={onClick}>

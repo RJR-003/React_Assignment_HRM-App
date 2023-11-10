@@ -4,7 +4,6 @@ import filterLogo from "../../assets/images/filter-logo.svg";
 import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
-
 let tempSkills: string[] = [
   "React",
   "React Native",
@@ -33,7 +32,11 @@ export default function FilterSectionContent() {
           <form>
             <InputField type="text" placeholder="Search Skill" />
           </form>
-          <Button src={clrFilterLogo} alt="clear-filter-log" />
+          <Button
+            onClick={() => console.log("function yet to be done")}
+            src={clrFilterLogo}
+            alt="clear-filter-log"
+          />
         </div>
         <div className="skill-list">
           {tempSkills.map((item) => (

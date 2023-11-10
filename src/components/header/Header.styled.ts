@@ -13,7 +13,10 @@ export const StyledHeader = styled.header`
     width: 1440px;
     margin: 0 auto;
   }
-  div > h1 {
+  div > a {
+    text-decoration: none;
+  }
+  div > a > h1 {
     cursor: pointer;
 
     font-size: 15px;
