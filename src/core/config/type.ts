@@ -7,13 +7,24 @@ export type employee = {
   id: number;
   role: string;
   skills: string[];
-  workLocation: string;
+  location: string;
   imageSrc: string;
 };
 
 export type dataBaseData = {
   employee: employee[];
-  department: String[];
+  department: string[];
   skill: string[];
   role: string[];
+};
+export type initialEmpDetails = {
+  email: string;
+  fullName: string;
+  dob: string;
+  doj: string;
+  // profileUpload: string;
+  role: string;
+  Department: string;
+  location: string;
+  skill: string;
 };

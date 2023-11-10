@@ -1,13 +1,14 @@
 import { StyledEntryForm, StyledEntryFormRow } from "./AddUpdateEmp.style";
-import testEmpProfile from "../../assets/images/profile.png";
+import defaultProfileImg from "../../assets/images/profile.png";
 import SkillChip from "../../components/skillChip/SkillChip";
 import { Formik, Form, useField } from "formik";
+import { testData } from "../../core/config/testData";
 import * as Yup from "yup";
+import { useLocation } from "react-router-dom";
+import { employee, initialEmpDetails } from "../../core/config/type";
+import { useState } from "react";
 
-const tempDepartment: string[] = ["Development", "UI", "UX", "BDG"];
-const tempRole: string[] = ["Engineer", "Lead Engineer", "Architect"];
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
-const tempSkills: string[] = ["HTML/CSS", "Node", "React", "Angular"];
 
 const TextInput = ({ label, ...props }: any) => {
   const [field, meta] = useField(props);
@@ -15,35 +16,67 @@ const TextInput = ({ label, ...props }: any) => {
     <>
       <label htmlFor={props.id || props.name}>{label}</label>
       <input {...field} {...props} />
-      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+      {meta.touched && meta.error ? (
+        <div className="form-error">{meta.error}</div>
+      ) : null}
     </>
   );
 };
 const FormSelectField = ({ label, ...props }: any) => {
   const [field, meta] = useField(props);
   return (
-    <div>
+    <>
       <label htmlFor={props.id || props.name}>{label}</label>
       <select {...field} {...props} />
-      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
-    </div>
+      {meta.touched && meta.error ? (
+        <div className="form-error">{meta.error}</div>
+      ) : null}
+    </>
   );
 };
 
 function AddUpdateEmp() {
+  const navigation = useLocation();
+  const [image, setImage] = useState("");
+  const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const image = e.target.files && e.target.files[0];
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      setImage(imageUrl);
+    }
+  };
+
+  const currId = navigation.pathname.split("/")[2];
+  console.log(currId, "currId");
+  const currData: employee = testData.employee.find(
+    (item) => item.id == Number(currId)
+  )!;
+  const imageSrc = currData?.imageSrc;
+
+  let initialEmpDetails: initialEmpDetails = {
+    email: "",
+    fullName: "",
+    dob: "",
+    doj: "",
+    role: "",
+    Department: "",
+    location: "",
+    skill: "",
+  };
+  const isAdd = navigation.pathname.split("/")[1] == "add-employee";
+  if (!isAdd) {
+    initialEmpDetails.email = currData.email;
+    initialEmpDetails.fullName = currData.fullName;
+    initialEmpDetails.dob = currData.dateOfBirth;
+    initialEmpDetails.doj = currData.dateOfJoin;
+    initialEmpDetails.role = currData.role;
+    initialEmpDetails.Department = currData.department;
+    initialEmpDetails.location = currData.location;
+  }
+
   return (
     <Formik
-      initialValues={{
-        email: "",
-        fullName: "",
-        dob: "",
-        doj: "",
-        profileUpload: "",
-        role: "",
-        Department: "",
-        location: "",
-        skill: "",
-      }}
+      initialValues={initialEmpDetails}
       validationSchema={Yup.object({
         fullName: Yup.string()
           .max(15, "First name must be less than 15 letters long")
@@ -71,7 +104,7 @@ function AddUpdateEmp() {
           <figure className="data-entry-modal-figure">
             <img
               className="data-entry-modal-img"
-              src={testEmpProfile}
+              src={isAdd ? image || defaultProfileImg : image || imageSrc}
               alt="employee profile"
             />
           </figure>
@@ -107,7 +140,7 @@ function AddUpdateEmp() {
                 <option value="" hidden>
                   select
                 </option>
-                {tempDepartment.map((item) => (
+                {testData.department.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
@@ -119,7 +152,7 @@ function AddUpdateEmp() {
                 <option value="" hidden>
                   select
                 </option>
-                {tempRole.map((item) => (
+                {testData.role.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
@@ -133,6 +166,8 @@ function AddUpdateEmp() {
                 label="Profile-upload"
                 name="profileUpload"
                 type="file"
+                style={{ maxWidth: "250px" }}
+                onChange={fileUploadHandler}
                 accept="image/*"
               />
             </div>
@@ -158,16 +193,18 @@ function AddUpdateEmp() {
                 <SkillChip>Skill 2</SkillChip>
               </div>
             </div>
-            <FormSelectField name="skill">
-              <option value="" hidden>
-                select
-              </option>
-              {tempSkills.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+            <div className="form-entry">
+              <FormSelectField name="skill">
+                <option value="" hidden>
+                  select
                 </option>
-              ))}
-            </FormSelectField>
+                {testData.skill.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </FormSelectField>
+            </div>
           </div>
 
           <button type="submit">submit</button>

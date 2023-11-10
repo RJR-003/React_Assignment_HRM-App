@@ -7,7 +7,7 @@ const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/view-employee/:id", element: <EmpDetails /> },
   { path: "/add-employee", element: <AddUpdateEmp /> },
-  { path: "/update-employee", element: <AddUpdateEmp /> },
+  { path: "/update-employee/:id", element: <AddUpdateEmp /> },
 ]);
 
 export default router;

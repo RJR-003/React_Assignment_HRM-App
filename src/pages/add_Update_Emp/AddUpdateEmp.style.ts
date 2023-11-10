@@ -14,13 +14,24 @@ export const StyledEntryForm = styled.div`
   border-radius: 15px;
   box-shadow: 1px 1px 10px var(--box-shadow);
 
+  .form-error {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+
   figure {
-    width: max-content;
-    border-radius: 10px;
+    border-radius: 16px;
     box-shadow: 1px 1px 10px var(--box-shadow);
+    overflow: hidden;
+    width: 153px;
+    object-fit: cover;
+    height: 200px;
   }
   figure > img {
-    border-radius: 15px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
   }
 
   form {
@@ -39,9 +50,7 @@ export const StyledEntryForm = styled.div`
     border-radius: 10px;
     background-color: var(--text-color);
     border: 1px solid var(--box-shadow);
-    /* border: 1px solid #999; */
     padding: 7px;
-    /* border: none; */
   }
 
   .form-entry {

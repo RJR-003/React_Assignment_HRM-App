@@ -1,7 +1,19 @@
 import styled from "styled-components";
 
+export const StyeledOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+`;
+
 export const StyledDeleteModal = styled.div`
-  /* display: none; */
   z-index: 2;
   position: fixed;
   top: 50%;
