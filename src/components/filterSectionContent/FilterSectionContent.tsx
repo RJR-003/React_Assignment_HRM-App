@@ -4,15 +4,34 @@ import filterLogo from "../../assets/images/filter-logo.svg";
 import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
-let tempSkills: string[] = [
-  "React",
-  "React Native",
-  "Angular",
-  "Node",
-  "HTML/CSS",
+import { useState } from "react";
+import { testData } from "../../core/config/testData";
+
+let initialSkillCheck = [
+  { id: "React", isCheck: false },
+  { id: "React Native", isCheck: false },
+  { id: "Angular", isCheck: false },
+  { id: "Node", isCheck: false },
+  { id: "HTML/CSS", isCheck: false },
 ];
 
 export default function FilterSectionContent() {
+  const [check, setCheck] = useState(initialSkillCheck);
+
+  function handleSkillClick(skill: string) {
+    initialSkillCheck = initialSkillCheck.map((item) => {
+      if (item.id === skill) return { ...item, isCheck: !item.isCheck };
+      return item;
+    });
+    setCheck(initialSkillCheck);
+  }
+
+  function handleClearFilter() {
+    initialSkillCheck = initialSkillCheck.map((item) => {
+      return { ...item, isCheck: false };
+    });
+    setCheck(initialSkillCheck);
+  }
   return (
     <StyledFilterSectionContent>
       <form className="search-box">
@@ -33,16 +52,24 @@ export default function FilterSectionContent() {
             <InputField type="text" placeholder="Search Skill" />
           </form>
           <Button
-            onClick={() => console.log("function yet to be done")}
+            onClick={handleClearFilter}
             src={clrFilterLogo}
             alt="clear-filter-log"
           />
         </div>
         <div className="skill-list">
-          {tempSkills.map((item) => (
-            <div key={item} className="skill-element">
-              <input type="checkbox" />
-              <label>{item}</label>
+          {testData.skill.map((item) => (
+            <div
+              onClick={() => handleSkillClick(item.skill)}
+              key={item.id}
+              className="skill-element"
+            >
+              <input
+                type="checkbox"
+                checked={check.find((each) => each.id === item.skill)?.isCheck}
+                readOnly
+              />
+              <label>{item.skill}</label>
             </div>
           ))}
         </div>

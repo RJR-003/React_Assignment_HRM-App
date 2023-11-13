@@ -40,5 +40,11 @@ export const testData: dataBaseData = {
     "Senior Architect",
   ],
 
-  skill: ["React", "React Native", "Angular", "Node", "CSS"],
+  skill: [
+    { id: 1, skill: "React" },
+    { id: 2, skill: "React Native" },
+    { id: 3, skill: "Angular" },
+    { id: 4, skill: "Node" },
+    { id: 5, skill: "HTML/CSS" },
+  ],
 };

@@ -14,7 +14,7 @@ export type employee = {
 export type dataBaseData = {
   employee: employee[];
   department: string[];
-  skill: string[];
+  skill: { id: number; skill: string }[];
   role: string[];
 };
 export type initialEmpDetails = {

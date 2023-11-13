@@ -7,8 +7,8 @@ import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
 import { employee, initialEmpDetails } from "../../core/config/type";
 import { useState } from "react";
-import TextInput from "./TextInputWrap";
-import FormSelectField from "./FormSelectFieldWrap";
+import TextInput from "./TextInput";
+import FormSelectField from "./FormSelectField";
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
 
 function AddUpdateEmp() {
@@ -85,81 +85,42 @@ function AddUpdateEmp() {
             />
           </figure>
 
-          <div className="form-entry">
-            <TextInput
-              label="Full Name"
-              name="fullName"
-              type="text"
-              placeholder="Enter full name"
-            />
-          </div>
-          <div className="form-entry">
-            <TextInput
-              label="E-Mail"
-              name="email"
-              type="text"
-              placeholder="Enter your e-mail"
-            />
-          </div>
+          <TextInput
+            label="Full Name"
+            name="fullName"
+            type="text"
+            placeholder="Enter full name"
+          />
+          <TextInput
+            label="E-Mail"
+            name="email"
+            type="text"
+            placeholder="Enter your e-mail"
+          />
 
           <StyledEntryFormRow>
-            <div className="form-entry">
-              <TextInput label="Date of Join" name="doj" type="date" />
-            </div>
-            <div className="form-entry">
-              <TextInput label="Date of Birth" type="date" name="dob" />
-            </div>
+            <TextInput label="Date of Join" name="doj" type="date" />
+            <TextInput label="Date of Birth" type="date" name="dob" />
           </StyledEntryFormRow>
           <StyledEntryFormRow>
-            <div className="form-entry">
-              <FormSelectField label="Department" name="Department">
-                <option value="" hidden>
-                  select
-                </option>
-                {testData.department.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </FormSelectField>
-            </div>
-            <div className="form-entry">
-              <FormSelectField label="Role" name="role">
-                <option value="" hidden>
-                  select
-                </option>
-                {testData.role.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </FormSelectField>
-            </div>
+            <FormSelectField
+              label="Department"
+              name="Department"
+              arr={testData.department}
+            />
+            <FormSelectField arr={testData.role} label="Role" name="role" />
           </StyledEntryFormRow>
           <div className="form-location-profile">
-            <div className="form-entry">
-              <TextInput
-                label="Profile-upload"
-                name="profileUpload"
-                type="file"
-                style={{ maxWidth: "250px" }}
-                onChange={fileUploadHandler}
-                accept="image/*"
-              />
-            </div>
+            <TextInput
+              label="Profile-upload"
+              name="profileUpload"
+              type="file"
+              style={{ maxWidth: "250px" }}
+              onChange={fileUploadHandler}
+              accept="image/*"
+            />
 
-            <div className="form-entry">
-              <FormSelectField label="Location" name="location">
-                <option value="" hidden>
-                  select
-                </option>
-                {tempLoc.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </FormSelectField>
-            </div>
+            <FormSelectField arr={tempLoc} label="Location" name="location" />
           </div>
           <div className="form-skill">
             <div>
@@ -169,18 +130,10 @@ function AddUpdateEmp() {
                 <SkillChip label="Skill 2" isView={false} />
               </div>
             </div>
-            <div className="form-entry">
-              <FormSelectField name="skill">
-                <option value="" hidden>
-                  select
-                </option>
-                {testData.skill.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </FormSelectField>
-            </div>
+            <FormSelectField
+              arr={testData.skill.map((item) => item.skill)}
+              name="skill"
+            />
           </div>
 
           <button type="submit">submit</button>
