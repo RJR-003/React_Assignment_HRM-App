@@ -1,11 +1,16 @@
 import { useField } from "formik";
 
-const FormSelectField = ({ arr, label, ...props }: any) => {
+const FormSelectField = ({ value, isMultiple, arr, label, ...props }: any) => {
   const [field, meta] = useField(props);
   return (
     <div className="form-entry">
       <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props}>
+      <select
+        {...field}
+        {...props}
+        multiple={isMultiple ? "multiple" : undefined}
+        value={value}
+      >
         <option value="" hidden>
           select
         </option>

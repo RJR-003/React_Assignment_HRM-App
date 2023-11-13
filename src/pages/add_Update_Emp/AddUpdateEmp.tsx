@@ -14,6 +14,7 @@ const tempLoc: string[] = ["Trivandrum", "Delhi"];
 function AddUpdateEmp() {
   const navigation = useLocation();
   const [image, setImage] = useState("");
+
   const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files && e.target.files[0];
     if (image) {
@@ -49,6 +50,20 @@ function AddUpdateEmp() {
     initialEmpDetails.Department = currData.department;
     initialEmpDetails.location = currData.location;
   }
+  const [addedSkills, setAddedSkills] = useState<string[]>([]);
+
+  function handleSelectSkill(e: MouseEvent) {
+    let target = e.target as HTMLElement;
+    let selectValue: string = (target as HTMLSelectElement).value;
+    if (selectValue) {
+      let selectedSkills: string[] = addedSkills;
+      if (!selectedSkills.includes(selectValue)) {
+        selectedSkills.push(selectValue);
+        setAddedSkills([...selectedSkills]);
+      }
+      console.log(addedSkills);
+    }
+  }
 
   return (
     <Formik
@@ -66,7 +81,7 @@ function AddUpdateEmp() {
         role: Yup.string().required("Required"),
         Department: Yup.string().required("Required"),
         location: Yup.string().required("Required"),
-        skill: Yup.string().required("Required"),
+        skill: Yup.mixed().required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -126,11 +141,18 @@ function AddUpdateEmp() {
             <div>
               <p>Skills</p>
               <div className="added-skills">
-                <SkillChip label="Skill 1" isView={false} />
-                <SkillChip label="Skill 2" isView={false} />
+                {addedSkills.map(
+                  (item) =>
+                    item && <SkillChip key={item} label={item} isView={false} />
+                )}
+                {/* <SkillChip label="Skill 1" isView={false} />
+                <SkillChip label="Skill 2" isView={false} /> */}
               </div>
             </div>
             <FormSelectField
+              isMultiple={true}
+              value={[testData.skill.map((item) => item.skill)]}
+              onClick={(e: MouseEvent) => handleSelectSkill(e)}
               arr={testData.skill.map((item) => item.skill)}
               name="skill"
             />
