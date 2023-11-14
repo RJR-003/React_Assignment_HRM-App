@@ -30,6 +30,47 @@ export const testData: dataBaseData = {
       skills: ["React", "Angular"],
       location: "Hyderabad",
     },
+
+    {
+      dateOfBirth: "2023-05-26",
+      dateOfJoin: "2023-10-21",
+      department: "development",
+      email: "billy.johns@gmail.com",
+      fullName: "Billy Johns",
+      id: 1003,
+      imageSrc:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIUAAACFCAMAAABCBMsOAAAAM1BMVEX////CwsK/v7/c3Nz8/PzFxcXIyMjo6OjV1dW8vLz19fXj4+P4+PjNzc3Y2NjS0tLv7+85X/oaAAADhklEQVR4nO2b2XKrMAyGY2GbxYD9/k9boJCUhEUSEuGc4b9qJ9PpN7Ika3Eej1u3bt26dbZsXVVVbb8IkLLovXPGOe9jlr6BkkcDYF6C0sT8XAQbOoK/DL8gAOFEgwT3QTCBuHASQ92sMQwcTX0GRL7FMHCc4B7ZHkSHkWlDtPsQHUarCxExEB1G1IRAWULbGgEL0WGoRWxCM/SqdCDsaq5alNNJo4gYnZ2JSrzWJQnCmFLDGAXNFJ0xCnmIisjQS95BiV4xGEPeMzzDFl4agpYrJiVhCsaBKBxJwzEFNMIUHFN0KUMWwlJT1kghm7gqJoVsxsiZFLIl6G7JuyzhQphLIVvrXMQW1/ALJoVsCieXOCOFcLfIpJCFeLAgjBGmQPdDM0nXfKxQFe/eOWWnceKFJ6fAkC4vWBlDOGf1svTy1yu0RYHcm6m07Y5qCg0IarBqDdlInapGlzqI5KA659GLkrqURjm9Enq6Jt0bzoTzUNAe/2K6ZhDvkj9U7acN+UvsUzZuJ9Eyau1IbAqFd5Oh842RI7jRJZJzvgiCa6yq9b/bqcnp6vZzUTR6RDvWu2n83bcyx1MXr/3Y84KyGZTvIFCabKq5X7NqgEKgEA+z//ZnE5TaxpQwqTRN+4yMt23S4T7Rvt8dz3PvP6xTyIrYxCIL6c9ONX8/LygOuYddWJFBs33SVfMZQ9AcwfCLTljG9ayUluMYDlxua1d55/phySBV8CvBc+CiD7CeJ8E08522TVmzhjD8AdNF9+5xKMvSx6LN2iL67ue9i46XOHAdCJiFXfeiWN1J4rXp62INM1jT3k0xjMGccG6JMf0kr4b2RY/WmtoDYeSo9xphgYsXOWdwVkP7FET/ZO4A9kTcETBnvXsidggKETJQkKLEakRIL9LyvdYxRWcMSqwquQVx1MWbsSJEeqMif5NNImQMxjwPK493DNagFydCJ40eltBFGK+ohQgpe6pcqCMF/lplPTBAUuCfIUQ1CGPwb+uWG0MREUoMvXRBmcZq3ai93D9GoQiBp7CaFOgVqy4Fttq6KU6iwNe/14hUzdyJp0C++uaI0Bddo764RsWnWYMTWsRrdEWVGgVpwHaJyYGWMUgt+0OpDKe/A978ChMTgj78lR/nAOeFTE37osa+yDNXBQwgzAzmypCbDwTDkQfqVetBQkc3zDbl2VHlX/nS6K1bt2797/oBmNcr+ovodh0AAAAASUVORK5CYII=",
+      role: "Associate Director",
+      skills: ["React", "Angular"],
+      location: "Bangalore",
+    },
+
+    {
+      dateOfBirth: "2023-05-26",
+      dateOfJoin: "2023-10-21",
+      department: "development",
+      email: "zacky.wild@gmail.com",
+      fullName: "Zack Wilde",
+      id: 1005,
+      imageSrc:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIUAAACFCAMAAABCBMsOAAAAM1BMVEX////CwsK/v7/c3Nz8/PzFxcXIyMjo6OjV1dW8vLz19fXj4+P4+PjNzc3Y2NjS0tLv7+85X/oaAAADhklEQVR4nO2b2XKrMAyGY2GbxYD9/k9boJCUhEUSEuGc4b9qJ9PpN7Ika3Eej1u3bt26dbZsXVVVbb8IkLLovXPGOe9jlr6BkkcDYF6C0sT8XAQbOoK/DL8gAOFEgwT3QTCBuHASQ92sMQwcTX0GRL7FMHCc4B7ZHkSHkWlDtPsQHUarCxExEB1G1IRAWULbGgEL0WGoRWxCM/SqdCDsaq5alNNJo4gYnZ2JSrzWJQnCmFLDGAXNFJ0xCnmIisjQS95BiV4xGEPeMzzDFl4agpYrJiVhCsaBKBxJwzEFNMIUHFN0KUMWwlJT1kghm7gqJoVsxsiZFLIl6G7JuyzhQphLIVvrXMQW1/ALJoVsCieXOCOFcLfIpJCFeLAgjBGmQPdDM0nXfKxQFe/eOWWnceKFJ6fAkC4vWBlDOGf1svTy1yu0RYHcm6m07Y5qCg0IarBqDdlInapGlzqI5KA659GLkrqURjm9Enq6Jt0bzoTzUNAe/2K6ZhDvkj9U7acN+UvsUzZuJ9Eyau1IbAqFd5Oh842RI7jRJZJzvgiCa6yq9b/bqcnp6vZzUTR6RDvWu2n83bcyx1MXr/3Y84KyGZTvIFCabKq5X7NqgEKgEA+z//ZnE5TaxpQwqTRN+4yMt23S4T7Rvt8dz3PvP6xTyIrYxCIL6c9ONX8/LygOuYddWJFBs33SVfMZQ9AcwfCLTljG9ayUluMYDlxua1d55/phySBV8CvBc+CiD7CeJ8E08522TVmzhjD8AdNF9+5xKMvSx6LN2iL67ue9i46XOHAdCJiFXfeiWN1J4rXp62INM1jT3k0xjMGccG6JMf0kr4b2RY/WmtoDYeSo9xphgYsXOWdwVkP7FET/ZO4A9kTcETBnvXsidggKETJQkKLEakRIL9LyvdYxRWcMSqwquQVx1MWbsSJEeqMif5NNImQMxjwPK493DNagFydCJ40eltBFGK+ohQgpe6pcqCMF/lplPTBAUuCfIUQ1CGPwb+uWG0MREUoMvXRBmcZq3ai93D9GoQiBp7CaFOgVqy4Fttq6KU6iwNe/14hUzdyJp0C++uaI0Bddo764RsWnWYMTWsRrdEWVGgVpwHaJyYGWMUgt+0OpDKe/A978ChMTgj78lR/nAOeFTE37osa+yDNXBQwgzAzmypCbDwTDkQfqVetBQkc3zDbl2VHlX/nS6K1bt2797/oBmNcr+ovodh0AAAAASUVORK5CYII=",
+      role: "Senior Engineer",
+      skills: ["React", "Angular"],
+      location: "Bangalore",
+    },
+    {
+      dateOfBirth: "2023-09-24",
+      dateOfJoin: "2023-09-25",
+      department: "development",
+      email: "james.wild@gmail.com",
+      fullName: "James Hetfield",
+      id: 1007,
+      imageSrc:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIUAAACFCAMAAABCBMsOAAAAM1BMVEX////CwsK/v7/c3Nz8/PzFxcXIyMjo6OjV1dW8vLz19fXj4+P4+PjNzc3Y2NjS0tLv7+85X/oaAAADhklEQVR4nO2b2XKrMAyGY2GbxYD9/k9boJCUhEUSEuGc4b9qJ9PpN7Ika3Eej1u3bt26dbZsXVVVbb8IkLLovXPGOe9jlr6BkkcDYF6C0sT8XAQbOoK/DL8gAOFEgwT3QTCBuHASQ92sMQwcTX0GRL7FMHCc4B7ZHkSHkWlDtPsQHUarCxExEB1G1IRAWULbGgEL0WGoRWxCM/SqdCDsaq5alNNJo4gYnZ2JSrzWJQnCmFLDGAXNFJ0xCnmIisjQS95BiV4xGEPeMzzDFl4agpYrJiVhCsaBKBxJwzEFNMIUHFN0KUMWwlJT1kghm7gqJoVsxsiZFLIl6G7JuyzhQphLIVvrXMQW1/ALJoVsCieXOCOFcLfIpJCFeLAgjBGmQPdDM0nXfKxQFe/eOWWnceKFJ6fAkC4vWBlDOGf1svTy1yu0RYHcm6m07Y5qCg0IarBqDdlInapGlzqI5KA659GLkrqURjm9Enq6Jt0bzoTzUNAe/2K6ZhDvkj9U7acN+UvsUzZuJ9Eyau1IbAqFd5Oh842RI7jRJZJzvgiCa6yq9b/bqcnp6vZzUTR6RDvWu2n83bcyx1MXr/3Y84KyGZTvIFCabKq5X7NqgEKgEA+z//ZnE5TaxpQwqTRN+4yMt23S4T7Rvt8dz3PvP6xTyIrYxCIL6c9ONX8/LygOuYddWJFBs33SVfMZQ9AcwfCLTljG9ayUluMYDlxua1d55/phySBV8CvBc+CiD7CeJ8E08522TVmzhjD8AdNF9+5xKMvSx6LN2iL67ue9i46XOHAdCJiFXfeiWN1J4rXp62INM1jT3k0xjMGccG6JMf0kr4b2RY/WmtoDYeSo9xphgYsXOWdwVkP7FET/ZO4A9kTcETBnvXsidggKETJQkKLEakRIL9LyvdYxRWcMSqwquQVx1MWbsSJEeqMif5NNImQMxjwPK493DNagFydCJ40eltBFGK+ohQgpe6pcqCMF/lplPTBAUuCfIUQ1CGPwb+uWG0MREUoMvXRBmcZq3ai93D9GoQiBp7CaFOgVqy4Fttq6KU6iwNe/14hUzdyJp0C++uaI0Bddo764RsWnWYMTWsRrdEWVGgVpwHaJyYGWMUgt+0OpDKe/A978ChMTgj78lR/nAOeFTE37osa+yDNXBQwgzAzmypCbDwTDkQfqVetBQkc3zDbl2VHlX/nS6K1bt2797/oBmNcr+ovodh0AAAAASUVORK5CYII=",
+      role: "Architect",
+      skills: ["React", "Angular"],
+      location: "Bangalore",
+    },
   ],
   role: [
     "Engineer",

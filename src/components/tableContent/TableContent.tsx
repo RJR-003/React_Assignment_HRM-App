@@ -6,9 +6,10 @@ import editImgIcon from "../../assets/images/edit-img.svg";
 import delImgIcon from "../../assets/images/del-img.svg";
 import Button from "../button/Button";
 import { Link } from "react-router-dom";
-import { testData } from "../../core/config/testData";
+// import { testData } from "../../core/config/testData";
 import { useState } from "react";
 import DeleteModal from "../deleteModal/DeleteModal";
+import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 
 export default function TableContent() {
   const [idToDel, setIdToDel] = useState("");
@@ -22,6 +23,8 @@ export default function TableContent() {
   function handleCancelDel() {
     setIdToDel("");
   }
+
+  const { empArr } = useEmployeeContext();
 
   return (
     <>
@@ -46,8 +49,8 @@ export default function TableContent() {
             </tr>
           </thead>
           <tbody>
-            {testData.employee.length != 0 ? (
-              testData.employee.map((item) => (
+            {empArr?.employee?.length != 0 ? (
+              empArr?.employee?.map((item) => (
                 <tr key={item.id} className="data-row">
                   <td>{item.id}</td>
                   <td>{item.fullName}</td>

@@ -12,10 +12,10 @@ export type employee = {
 };
 
 export type dataBaseData = {
-  employee: employee[];
-  department: string[];
-  skill: { id: number; skill: string }[];
-  role: string[];
+  employee?: employee[];
+  department?: string[];
+  skill?: { id: number; skill: string }[];
+  role?: string[];
 };
 export type initialEmpDetails = {
   email: string;
@@ -27,4 +27,9 @@ export type initialEmpDetails = {
   Department: string;
   location: string;
   skill: string;
+};
+export type employeeList = {
+  testData?: dataBaseData;
+  empArr?: dataBaseData;
+  setEmployeeArr?: (arr: dataBaseData) => void;
 };

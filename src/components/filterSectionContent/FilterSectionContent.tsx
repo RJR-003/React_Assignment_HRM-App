@@ -4,8 +4,10 @@ import filterLogo from "../../assets/images/filter-logo.svg";
 import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
-import { useState } from "react";
 import { testData } from "../../core/config/testData";
+import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
+import { ChangeEvent, useState } from "react";
+import { dataBaseData } from "../../core/config/type";
 
 let initialSkillCheck = [
   { id: "React", isCheck: false },
@@ -17,6 +19,8 @@ let initialSkillCheck = [
 
 export default function FilterSectionContent() {
   const [check, setCheck] = useState(initialSkillCheck);
+
+  const { empArr, setEmployeeArr } = useEmployeeContext();
 
   function handleSkillClick(skill: string) {
     initialSkillCheck = initialSkillCheck.map((item) => {
@@ -32,6 +36,17 @@ export default function FilterSectionContent() {
     });
     setCheck(initialSkillCheck);
   }
+  function handleSearchInput(e: ChangeEvent) {
+    const target = e.target as HTMLInputElement;
+    let searchVal = target.value;
+    let tempArr = testData?.employee;
+    tempArr = tempArr?.filter((item) =>
+      item.fullName.toLowerCase().includes(searchVal.toLowerCase())
+    );
+    let changedObj: dataBaseData = { ...empArr, employee: tempArr! };
+    setEmployeeArr!(changedObj);
+  }
+
   return (
     <StyledFilterSectionContent>
       <form className="search-box">
@@ -40,6 +55,7 @@ export default function FilterSectionContent() {
           placeholder="Search by Name..."
           src={searchIcon}
           alt="search-icon"
+          onChange={handleSearchInput}
         />
       </form>
       <div className="filter-section">
@@ -58,7 +74,7 @@ export default function FilterSectionContent() {
           />
         </div>
         <div className="skill-list">
-          {testData.skill.map((item) => (
+          {testData.skill?.map((item) => (
             <div
               onClick={() => handleSkillClick(item.skill)}
               key={item.id}

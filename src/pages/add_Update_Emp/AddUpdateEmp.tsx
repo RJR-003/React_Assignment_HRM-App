@@ -6,7 +6,7 @@ import { testData } from "../../core/config/testData";
 import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
 import { employee, initialEmpDetails } from "../../core/config/type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import FormSelectField from "./FormSelectField";
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
@@ -40,16 +40,7 @@ function AddUpdateEmp() {
     location: "",
     skill: "",
   };
-  const isAdd = navigation.pathname.split("/")[1] == "add-employee";
-  if (!isAdd) {
-    initialEmpDetails.email = currData.email;
-    initialEmpDetails.fullName = currData.fullName;
-    initialEmpDetails.dob = currData.dateOfBirth;
-    initialEmpDetails.doj = currData.dateOfJoin;
-    initialEmpDetails.role = currData.role;
-    initialEmpDetails.Department = currData.department;
-    initialEmpDetails.location = currData.location;
-  }
+
   const [addedSkills, setAddedSkills] = useState<string[]>([]);
 
   function handleSelectSkill(e: MouseEvent) {
@@ -70,6 +61,22 @@ function AddUpdateEmp() {
     setAddedSkills([...tempArr]);
   }
 
+  const isAdd = navigation.pathname.split("/")[1] == "add-employee";
+  if (!isAdd) {
+    initialEmpDetails.email = currData.email;
+    initialEmpDetails.fullName = currData.fullName;
+    initialEmpDetails.dob = currData.dateOfBirth;
+    initialEmpDetails.doj = currData.dateOfJoin;
+    initialEmpDetails.role = currData.role;
+    initialEmpDetails.Department = currData.department;
+    initialEmpDetails.location = currData.location;
+  }
+  useEffect(() => {
+    if (!isAdd) {
+      setAddedSkills([...currData.skills]);
+    }
+  }, []);
+
   return (
     <Formik
       initialValues={initialEmpDetails}
@@ -86,7 +93,6 @@ function AddUpdateEmp() {
         role: Yup.string().required("Required"),
         Department: Yup.string().required("Required"),
         location: Yup.string().required("Required"),
-        skill: Yup.mixed().required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {

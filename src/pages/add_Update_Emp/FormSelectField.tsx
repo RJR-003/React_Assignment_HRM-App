@@ -9,7 +9,7 @@ const FormSelectField = ({ value, isMultiple, arr, label, ...props }: any) => {
         {...field}
         {...props}
         multiple={isMultiple ? "multiple" : undefined}
-        value={value}
+        // value={value}
       >
         <option value="" hidden>
           select

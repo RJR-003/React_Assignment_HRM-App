@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 function InputField({
   label,
   type,
@@ -6,6 +8,7 @@ function InputField({
   alt,
   classname,
   accept,
+  onChange,
 }: {
   label?: string;
   type?: string;
@@ -15,11 +18,18 @@ function InputField({
   id?: string;
   classname?: string;
   accept?: string;
+  onChange?: (e: ChangeEvent) => void;
 }) {
   return (
     <div className={classname}>
       {label && <label htmlFor={label}>{label}</label>}
-      <input type={type} id={label} placeholder={placeholder} accept={accept} />
+      <input
+        onChange={onChange}
+        type={type}
+        id={label}
+        placeholder={placeholder}
+        accept={accept}
+      />
       {src && <img src={src} alt={alt} />}
     </div>
   );
