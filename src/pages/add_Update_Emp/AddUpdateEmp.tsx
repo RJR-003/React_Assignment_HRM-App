@@ -65,6 +65,11 @@ function AddUpdateEmp() {
     }
   }
 
+  function handleSkillChipClick(item: string) {
+    let tempArr = addedSkills.filter((each) => each !== item);
+    setAddedSkills([...tempArr]);
+  }
+
   return (
     <Formik
       initialValues={initialEmpDetails}
@@ -143,10 +148,15 @@ function AddUpdateEmp() {
               <div className="added-skills">
                 {addedSkills.map(
                   (item) =>
-                    item && <SkillChip key={item} label={item} isView={false} />
+                    item && (
+                      <SkillChip
+                        onClick={() => handleSkillChipClick(item)}
+                        key={item}
+                        label={item}
+                        isView={false}
+                      />
+                    )
                 )}
-                {/* <SkillChip label="Skill 1" isView={false} />
-                <SkillChip label="Skill 2" isView={false} /> */}
               </div>
             </div>
             <FormSelectField

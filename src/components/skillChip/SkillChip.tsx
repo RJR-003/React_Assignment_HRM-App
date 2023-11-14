@@ -1,9 +1,17 @@
 import { StyledSkillChip } from "./SkillChip.style";
 import closeImg from "../../assets/images/close-button.svg";
 
-function SkillChip({ label, isView }: { label: string; isView: boolean }) {
+function SkillChip({
+  onClick,
+  label,
+  isView,
+}: {
+  onClick: () => void;
+  label: string;
+  isView: boolean;
+}) {
   return (
-    <StyledSkillChip>
+    <StyledSkillChip onClick={onClick}>
       {label}
       {!isView && (
         <span>
