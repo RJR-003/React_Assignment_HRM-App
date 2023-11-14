@@ -25,8 +25,8 @@ function AddUpdateEmp() {
 
   const currId = navigation.pathname.split("/")[2];
   console.log(currId, "currId");
-  const currData: employee = testData.employee.find(
-    (item) => item.id == Number(currId)
+  const currData: employee = testData.employee?.find(
+    (item) => item.id === Number(currId)
   )!;
   const imageSrc = currData?.imageSrc;
 
@@ -167,9 +167,9 @@ function AddUpdateEmp() {
             </div>
             <FormSelectField
               isMultiple={true}
-              value={[testData.skill.map((item) => item.skill)]}
+              value={[testData.skill?.map((item) => item.skill)]}
               onClick={(e: MouseEvent) => handleSelectSkill(e)}
-              arr={testData.skill.map((item) => item.skill)}
+              arr={testData.skill?.map((item) => item.skill)}
               name="skill"
             />
           </div>

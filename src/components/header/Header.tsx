@@ -1,12 +1,12 @@
 import { StyledHeader } from "./Header.styled";
-
+import { Link } from "react-router-dom";
 export default function Header() {
   return (
     <StyledHeader>
       <div>
-        <a href="/">
+        <Link to="/">
           <h1>HRM APP</h1>
-        </a>
+        </Link>
       </div>
     </StyledHeader>
   );
