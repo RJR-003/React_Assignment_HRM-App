@@ -24,7 +24,7 @@ export default function TableContent() {
     setIdToDel("");
   }
 
-  const { empArr } = useEmployeeContext();
+  const { empObj } = useEmployeeContext();
 
   return (
     <>
@@ -49,8 +49,8 @@ export default function TableContent() {
             </tr>
           </thead>
           <tbody>
-            {empArr?.employee?.length != 0 ? (
-              empArr?.employee?.map((item) => (
+            {empObj?.employee?.length != 0 ? (
+              empObj?.employee?.map((item) => (
                 <tr key={item.id} className="data-row">
                   <td>{item.id}</td>
                   <td>{item.fullName}</td>

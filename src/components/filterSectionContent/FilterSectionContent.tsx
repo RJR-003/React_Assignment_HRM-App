@@ -8,6 +8,7 @@ import { testData } from "../../core/config/testData";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 import { ChangeEvent, useState } from "react";
 import { dataBaseData } from "../../core/config/type";
+import { useEffect } from "react";
 
 let initialSkillCheck = [
   { id: "React", isCheck: false },
@@ -19,8 +20,41 @@ let initialSkillCheck = [
 
 export default function FilterSectionContent() {
   const [check, setCheck] = useState(initialSkillCheck);
+  const [searchInput, setSearchInput] = useState("");
 
-  const { empArr, setEmployeeArr } = useEmployeeContext();
+  const { empObj, setEmployeeArr } = useEmployeeContext();
+
+  useEffect(() => {
+    let tempCheck = check;
+    let checkedSkills = tempCheck
+      .filter((item) => item.isCheck === true)
+      .map((item) => item.id);
+
+    console.log(checkedSkills, "checkedSkills");
+
+    let filteredEmployee = testData.employee!;
+
+    if (checkedSkills.length !== 0) {
+      filteredEmployee = filteredEmployee.filter((employee) =>
+        checkedSkills.every((skill) => employee.skills.includes(skill))
+      );
+    }
+
+    if (searchInput !== "") {
+      filteredEmployee = filteredEmployee?.filter((item) =>
+        item.fullName.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    }
+
+    let changedObj: dataBaseData = {
+      ...empObj,
+      employee: filteredEmployee!,
+    };
+    if (checkedSkills.length == 0 && filteredEmployee?.length === 0) {
+      changedObj = testData;
+    }
+    setEmployeeArr!(changedObj);
+  }, [check, searchInput]);
 
   function handleSkillClick(skill: string) {
     initialSkillCheck = initialSkillCheck.map((item) => {
@@ -36,15 +70,11 @@ export default function FilterSectionContent() {
     });
     setCheck(initialSkillCheck);
   }
+
   function handleSearchInput(e: ChangeEvent) {
     const target = e.target as HTMLInputElement;
     let searchVal = target.value;
-    let tempArr = testData?.employee;
-    tempArr = tempArr?.filter((item) =>
-      item.fullName.toLowerCase().includes(searchVal.toLowerCase())
-    );
-    let changedObj: dataBaseData = { ...empArr, employee: tempArr! };
-    setEmployeeArr!(changedObj);
+    setSearchInput(searchVal.toLowerCase());
   }
 
   return (

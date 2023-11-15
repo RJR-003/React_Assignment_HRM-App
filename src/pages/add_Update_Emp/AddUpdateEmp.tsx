@@ -82,6 +82,7 @@ function AddUpdateEmp() {
       initialValues={initialEmpDetails}
       validationSchema={Yup.object({
         fullName: Yup.string()
+          .trim()
           .max(15, "First name must be less than 15 letters long")
           .required("Required"),
 

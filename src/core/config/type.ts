@@ -30,6 +30,6 @@ export type initialEmpDetails = {
 };
 export type employeeList = {
   testData?: dataBaseData;
-  empArr?: dataBaseData;
+  empObj?: dataBaseData;
   setEmployeeArr?: (arr: dataBaseData) => void;
 };

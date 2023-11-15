@@ -6,16 +6,16 @@ import { employeeList } from "../config/type";
 const EmployeeListContext = createContext<employeeList>({ testData });
 
 export function EmployeeProvider({ children }: { children: ReactNode }) {
-  const [empArr, setEmpArr] = useState(testData);
+  const [empObj, setEmpObj] = useState(testData);
 
   const setEmployeeArr = (arr: dataBaseData) => {
-    setEmpArr({ ...arr });
+    setEmpObj({ ...arr });
   };
   const value: {
-    empArr: dataBaseData;
+    empObj: dataBaseData;
     setEmployeeArr: (arr: dataBaseData) => void;
   } = {
-    empArr,
+    empObj,
     setEmployeeArr,
   };
 
