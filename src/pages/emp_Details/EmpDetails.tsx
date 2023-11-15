@@ -10,7 +10,7 @@ export default function EmpDetails() {
   const navigation = useLocation();
 
   const currId = navigation.pathname.split("/")[2];
-  const currData: employee = testData.employee.find(
+  const currData: employee = testData.employee?.find(
     (item) => item.id == Number(currId)
   )!;
   const leftViewContent: string[] = [

@@ -6,7 +6,7 @@ function SkillChip({
   label,
   isView,
 }: {
-  onClick: () => void;
+  onClick?: () => void;
   label: string;
   isView: boolean;
 }) {

@@ -5,11 +5,21 @@ import { Formik, Form } from "formik";
 import { testData } from "../../core/config/testData";
 import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
-import { employee, initialEmpDetails } from "../../core/config/type";
-import { useEffect, useState } from "react";
+import { initialEmpDetailsType } from "../../core/config/type";
+import { useEffect, useMemo, useState } from "react";
 import TextInput from "./TextInput";
 import FormSelectField from "./FormSelectField";
 const tempLoc: string[] = ["Trivandrum", "Delhi"];
+let initialEmpDetails: initialEmpDetailsType = {
+  email: "",
+  fullName: "",
+  dob: "",
+  doj: "",
+  role: "",
+  Department: "",
+  location: "",
+  skill: "",
+};
 
 function AddUpdateEmp() {
   const navigation = useLocation();
@@ -22,24 +32,13 @@ function AddUpdateEmp() {
       setImage(imageUrl);
     }
   };
-
   const currId = navigation.pathname.split("/")[2];
-  console.log(currId, "currId");
-  const currData: employee = testData.employee?.find(
-    (item) => item.id === Number(currId)
-  )!;
-  const imageSrc = currData?.imageSrc;
+  const currData = useMemo(
+    () => testData.employee?.find((item) => item.id === Number(currId))!,
+    [currId]
+  );
 
-  let initialEmpDetails: initialEmpDetails = {
-    email: "",
-    fullName: "",
-    dob: "",
-    doj: "",
-    role: "",
-    Department: "",
-    location: "",
-    skill: "",
-  };
+  const imageSrc = currData?.imageSrc;
 
   const [addedSkills, setAddedSkills] = useState<string[]>([]);
 
@@ -70,6 +69,14 @@ function AddUpdateEmp() {
     initialEmpDetails.role = currData.role;
     initialEmpDetails.Department = currData.department;
     initialEmpDetails.location = currData.location;
+  } else {
+    initialEmpDetails.email = "";
+    initialEmpDetails.fullName = "";
+    initialEmpDetails.dob = "";
+    initialEmpDetails.doj = "";
+    initialEmpDetails.role = "";
+    initialEmpDetails.Department = "";
+    initialEmpDetails.location = "";
   }
   useEffect(() => {
     if (!isAdd) {

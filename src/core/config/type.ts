@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 export type employee = {
   dateOfBirth: string;
   dateOfJoin: string;
@@ -17,7 +19,7 @@ export type dataBaseData = {
   skill?: { id: number; skill: string }[];
   role?: string[];
 };
-export type initialEmpDetails = {
+export type initialEmpDetailsType = {
   email: string;
   fullName: string;
   dob: string;
@@ -32,4 +34,28 @@ export type employeeList = {
   testData?: dataBaseData;
   empObj?: dataBaseData;
   setEmployeeArr?: (arr: dataBaseData) => void;
+};
+
+export type filterSectionContentProps = {
+  SearchFun: (e: ChangeEvent) => void;
+  clearFun: () => void;
+  skillClickFun: (skill: string) => void;
+  checkObj: {
+    check: { id: string; isCheck: boolean }[];
+    setCheck: React.Dispatch<
+      React.SetStateAction<
+        {
+          id: string;
+          isCheck: boolean;
+        }[]
+      >
+    >;
+  };
+};
+
+export type tableContentProps = {
+  sortObj: {
+    ascSort: boolean;
+    setAscSort: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 };

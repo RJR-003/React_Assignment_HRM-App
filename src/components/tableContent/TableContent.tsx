@@ -1,17 +1,18 @@
 import { StyledTableContent } from "./TableContent.styled";
 import addEmpicon from "../../assets/images/add-employee.svg";
 import upArrow from "../../assets/images/up-arrow.svg";
+import downArrow from "../../assets/images/down-arrow.svg";
 import viewImgIcon from "../../assets/images/view-img.svg";
 import editImgIcon from "../../assets/images/edit-img.svg";
 import delImgIcon from "../../assets/images/del-img.svg";
 import Button from "../button/Button";
 import { Link } from "react-router-dom";
-// import { testData } from "../../core/config/testData";
 import { useState } from "react";
 import DeleteModal from "../deleteModal/DeleteModal";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
+import { tableContentProps } from "../../core/config/type";
 
-export default function TableContent() {
+export default function TableContent({ sortObj }: tableContentProps) {
   const [idToDel, setIdToDel] = useState("");
   function handleDelClick(id: string) {
     setIdToDel(id);
@@ -25,6 +26,10 @@ export default function TableContent() {
   }
 
   const { empObj } = useEmployeeContext();
+
+  function handleSortFun() {
+    sortObj.setAscSort(!sortObj.ascSort);
+  }
 
   return (
     <>
@@ -41,7 +46,13 @@ export default function TableContent() {
             <tr className="heading-row">
               <th id="first-heading">ID</th>
               <th>
-                Name <img className="sort-button" src={upArrow} alt="arrow" />
+                Name{" "}
+                <img
+                  className="sort-button"
+                  onClick={handleSortFun}
+                  src={sortObj.ascSort ? downArrow : upArrow}
+                  alt="arrow"
+                />
               </th>
               <th>E-mail</th>
               <th>Department</th>

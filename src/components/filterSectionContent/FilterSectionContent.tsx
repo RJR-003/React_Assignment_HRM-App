@@ -5,78 +5,28 @@ import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
 import { testData } from "../../core/config/testData";
-import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
+import { filterSectionContentProps } from "../../core/config/type";
 import { ChangeEvent, useState } from "react";
-import { dataBaseData } from "../../core/config/type";
-import { useEffect } from "react";
 
-let initialSkillCheck = [
-  { id: "React", isCheck: false },
-  { id: "React Native", isCheck: false },
-  { id: "Angular", isCheck: false },
-  { id: "Node", isCheck: false },
-  { id: "HTML/CSS", isCheck: false },
-];
+export default function FilterSectionContent({
+  SearchFun,
+  clearFun,
+  skillClickFun,
+  checkObj,
+}: filterSectionContentProps) {
+  const [renderSkillList, setRenderSkillList] = useState(testData.skill);
 
-export default function FilterSectionContent() {
-  const [check, setCheck] = useState(initialSkillCheck);
-  const [searchInput, setSearchInput] = useState("");
-
-  const { empObj, setEmployeeArr } = useEmployeeContext();
-
-  useEffect(() => {
-    let tempCheck = check;
-    let checkedSkills = tempCheck
-      .filter((item) => item.isCheck === true)
-      .map((item) => item.id);
-
-    console.log(checkedSkills, "checkedSkills");
-
-    let filteredEmployee = testData.employee!;
-
-    if (checkedSkills.length !== 0) {
-      filteredEmployee = filteredEmployee.filter((employee) =>
-        checkedSkills.every((skill) => employee.skills.includes(skill))
-      );
-    }
-
-    if (searchInput !== "") {
-      filteredEmployee = filteredEmployee?.filter((item) =>
-        item.fullName.toLowerCase().includes(searchInput.toLowerCase())
-      );
-    }
-
-    let changedObj: dataBaseData = {
-      ...empObj,
-      employee: filteredEmployee!,
-    };
-    if (checkedSkills.length == 0 && filteredEmployee?.length === 0) {
-      changedObj = testData;
-    }
-    setEmployeeArr!(changedObj);
-  }, [check, searchInput]);
-
-  function handleSkillClick(skill: string) {
-    initialSkillCheck = initialSkillCheck.map((item) => {
-      if (item.id === skill) return { ...item, isCheck: !item.isCheck };
-      return item;
-    });
-    setCheck(initialSkillCheck);
-  }
-
-  function handleClearFilter() {
-    initialSkillCheck = initialSkillCheck.map((item) => {
-      return { ...item, isCheck: false };
-    });
-    setCheck(initialSkillCheck);
-  }
-
-  function handleSearchInput(e: ChangeEvent) {
+  function handleSkillSearch(e: ChangeEvent) {
     const target = e.target as HTMLInputElement;
     let searchVal = target.value;
-    setSearchInput(searchVal.toLowerCase());
+    let tempArr = testData.skill;
+    if (searchVal != "") {
+      tempArr = tempArr?.filter((item) =>
+        item.skill.toLowerCase().includes(searchVal.toLowerCase())
+      );
+    }
+    setRenderSkillList([...tempArr!]);
   }
-
   return (
     <StyledFilterSectionContent>
       <form className="search-box">
@@ -85,7 +35,7 @@ export default function FilterSectionContent() {
           placeholder="Search by Name..."
           src={searchIcon}
           alt="search-icon"
-          onChange={handleSearchInput}
+          onChange={SearchFun}
         />
       </form>
       <div className="filter-section">
@@ -95,24 +45,31 @@ export default function FilterSectionContent() {
         </div>
         <div className="filter-search">
           <form>
-            <InputField type="text" placeholder="Search Skill" />
+            <InputField
+              type="text"
+              placeholder="Search Skill"
+              onChange={handleSkillSearch}
+            />
           </form>
           <Button
-            onClick={handleClearFilter}
+            onClick={clearFun}
             src={clrFilterLogo}
             alt="clear-filter-log"
           />
         </div>
         <div className="skill-list">
-          {testData.skill?.map((item) => (
+          {renderSkillList?.map((item) => (
             <div
-              onClick={() => handleSkillClick(item.skill)}
+              onClick={() => skillClickFun(item.skill)}
               key={item.id}
               className="skill-element"
             >
               <input
                 type="checkbox"
-                checked={check.find((each) => each.id === item.skill)?.isCheck}
+                checked={
+                  checkObj.check.find((each: any) => each.id === item.skill)
+                    ?.isCheck
+                }
                 readOnly
               />
               <label>{item.skill}</label>
