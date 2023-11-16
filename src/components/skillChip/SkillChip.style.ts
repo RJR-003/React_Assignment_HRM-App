@@ -7,7 +7,7 @@ export const StyledSkillChip = styled.div`
   align-self: flex-start;
   cursor: pointer;
 
-  &:hover {
+  &.clickable:hover {
     background-color: var(--skillbox-hover);
   }
   .close-img {

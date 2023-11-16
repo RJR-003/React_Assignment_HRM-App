@@ -11,7 +11,7 @@ function SkillChip({
   isView: boolean;
 }) {
   return (
-    <StyledSkillChip onClick={onClick}>
+    <StyledSkillChip className={isView ? "" : "clickable"} onClick={onClick}>
       {label}
       {!isView && (
         <span>

@@ -66,6 +66,7 @@ export default function Home() {
     ) {
       changedObj = testData;
     }
+    console.log(changedObj.employee);
     setEmployeeArr!(changedObj);
   }, [check, searchInput, ascSort]);
 

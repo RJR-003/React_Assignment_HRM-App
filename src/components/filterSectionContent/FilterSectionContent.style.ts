@@ -13,6 +13,7 @@ export const StyledFilterSectionContent = styled.div`
     border-radius: 10px;
     border: none;
     box-shadow: 1px 1px 10px var(--box-shadow);
+    padding-right: 50px;
   }
 
   .search-box > div > img {
