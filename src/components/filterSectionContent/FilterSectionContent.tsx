@@ -4,28 +4,30 @@ import filterLogo from "../../assets/images/filter-logo.svg";
 import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
-import { testData } from "../../core/config/testData";
 import { filterSectionContentProps } from "../../core/config/type";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
+import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 
 export default function FilterSectionContent({
   SearchFun,
   clearFun,
   skillClickFun,
   checkObj,
+  searchValue,
 }: filterSectionContentProps) {
-  const [renderSkillList, setRenderSkillList] = useState(testData.skill);
+  const { skillObj, skillLoading, renderSkillList, setSkillList } =
+    useEmployeeContext();
 
   function handleSkillSearch(e: ChangeEvent) {
     const target = e.target as HTMLInputElement;
     let searchVal = target.value;
-    let tempArr = testData.skill;
+    let tempArr = skillObj;
     if (searchVal != "") {
       tempArr = tempArr?.filter((item) =>
         item.skill.toLowerCase().includes(searchVal.toLowerCase())
       );
     }
-    setRenderSkillList([...tempArr!]);
+    setSkillList!([...tempArr!]);
   }
   return (
     <StyledFilterSectionContent>
@@ -36,6 +38,7 @@ export default function FilterSectionContent({
           src={searchIcon}
           alt="search-icon"
           onChange={SearchFun}
+          value={searchValue}
         />
       </form>
       <div className="filter-section">
@@ -58,23 +61,41 @@ export default function FilterSectionContent({
           />
         </div>
         <div className="skill-list">
-          {renderSkillList?.map((item) => (
-            <div
-              onClick={() => skillClickFun(item.skill)}
-              key={item.id}
-              className="skill-element"
-            >
-              <input
-                type="checkbox"
-                checked={
-                  checkObj.check.find((each: any) => each.id === item.skill)
-                    ?.isCheck
-                }
-                readOnly
-              />
-              <label>{item.skill}</label>
+          {skillLoading ? (
+            <div className="skill-loader-container">
+              <p className="skill-loader">loading...</p>
             </div>
-          ))}
+          ) : renderSkillList!.length != 0 ? (
+            renderSkillList
+              ?.sort((a, b) =>
+                a.skill.toLowerCase() === b.skill.toLowerCase()
+                  ? 0
+                  : a.skill.toLowerCase() > b.skill.toLowerCase()
+                  ? 1
+                  : -1
+              )
+              .map((item) => (
+                <div
+                  onClick={() => skillClickFun(item.skill)}
+                  key={item.id}
+                  className="skill-element"
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      checkObj.check.find((each: any) => each.id === item.skill)
+                        ?.isCheck
+                    }
+                    readOnly
+                  />
+                  <label>{item.skill}</label>
+                </div>
+              ))
+          ) : (
+            <div className="skill-loader-container">
+              <p className="skill-loader">No data</p>
+            </div>
+          )}
         </div>
       </div>
     </StyledFilterSectionContent>

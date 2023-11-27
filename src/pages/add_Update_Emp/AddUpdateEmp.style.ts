@@ -98,6 +98,8 @@ export const StyledEntryForm = styled.div`
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
+    max-height: 200px;
+    overflow: scroll;
   }
 
   .form-skill select {

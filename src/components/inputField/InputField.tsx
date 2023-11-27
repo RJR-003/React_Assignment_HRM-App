@@ -9,6 +9,7 @@ function InputField({
   classname,
   accept,
   onChange,
+  value,
 }: {
   label?: string;
   type?: string;
@@ -18,6 +19,7 @@ function InputField({
   id?: string;
   classname?: string;
   accept?: string;
+  value?: string;
   onChange?: (e: ChangeEvent) => void;
 }) {
   return (
@@ -29,6 +31,7 @@ function InputField({
         id={label}
         placeholder={placeholder}
         accept={accept}
+        value={value}
       />
       {src && <img src={src} alt={alt} />}
     </div>

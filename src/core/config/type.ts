@@ -30,10 +30,82 @@ export type initialEmpDetailsType = {
   location: string;
   skill: string;
 };
+// export type employeeList = {
+//   testData?: dataBaseData;
+//   empObj?: dataBaseData;
+//   setEmployeeArr?: (arr: dataBaseData) => void;
+// };
 export type employeeList = {
+  employeeData?: ApiGetEmpData[];
+  empObj?: ApiGetEmpData[];
+  setEmployeeObj?: (arr: ApiGetEmpData[]) => void;
+  empLoading?: boolean;
+  skillLoading?: boolean;
+  initialEmpData?: ApiGetEmpData[];
+  skillObj?: ApiGetSkillData[];
+  renderSkillList?: ApiGetSkillData[];
+  setSkillList?: (arr: ApiGetSkillData[]) => void;
+  deptObj?: ApiGetDeptData[];
+  roleObj?: ApiGetRoleData[];
+  setInitialEmployeeData?: (arr: ApiGetEmpData[]) => void;
+};
+export type formValues = {
+  email: string;
+  fullName: string;
+  dob: string;
+  doj: string;
+  role: string;
+  Department: string;
+  location: string;
+  skill: string;
+};
+export type returnFormValues = {
+  email: string;
+  firstName: string;
+  dob: string;
+  dateOfJoining: string;
+  role: number;
+  department: number;
+  skills: number[];
+};
+export type ApiGetEmpData = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  dob: string;
+  email: string;
+  phone: string;
+  designation: string;
+  department: ApiGetDeptData;
+  role: ApiGetRoleData;
+  skills: { id: number; skill: string }[];
+  dateOfJoining: string;
+  salary: string;
+  address: string;
+  moreDetails: any;
+};
+export type TestType = {
+  employee?: ApiGetEmpData[];
+  department?: string[];
+  skill?: { id: number; skill: string }[];
+  role?: string[];
   testData?: dataBaseData;
   empObj?: dataBaseData;
   setEmployeeArr?: (arr: dataBaseData) => void;
+};
+
+export type ApiGetDeptData = {
+  id: number;
+  department: string;
+};
+export type ApiGetRoleData = {
+  id: number;
+  role: string;
+};
+export type ApiGetSkillData = {
+  id: number;
+  skill: string;
 };
 
 export type filterSectionContentProps = {
@@ -51,6 +123,7 @@ export type filterSectionContentProps = {
       >
     >;
   };
+  searchValue: string;
 };
 
 export type tableContentProps = {
@@ -59,3 +132,8 @@ export type tableContentProps = {
     setAscSort: React.Dispatch<React.SetStateAction<boolean>>;
   };
 };
+export interface AxiosHookProps {
+  url: string;
+  method: "get" | "post" | "put" | "delete";
+  body?: any;
+}

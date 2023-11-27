@@ -5,10 +5,10 @@ export const StyledSkillChip = styled.div`
   background-color: var(--skillbox);
   border-radius: 5px;
   align-self: flex-start;
-  cursor: pointer;
 
   &.clickable:hover {
     background-color: var(--skillbox-hover);
+    cursor: pointer;
   }
   .close-img {
     width: 10px;

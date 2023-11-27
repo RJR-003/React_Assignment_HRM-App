@@ -55,6 +55,7 @@ export const StyledViewPage = styled.div`
     flex-wrap: wrap;
     overflow: scroll;
     gap: 10px;
+    max-height: 200px;
   }
 
   .each-skill-view {

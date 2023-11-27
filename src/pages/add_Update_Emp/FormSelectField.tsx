@@ -1,6 +1,6 @@
 import { useField } from "formik";
 
-const FormSelectField = ({ value, isMultiple, arr, label, ...props }: any) => {
+const FormSelectField = ({ isMultiple, arr, label, ...props }: any) => {
   const [field, meta] = useField(props);
   return (
     <div className="form-entry">
@@ -9,12 +9,13 @@ const FormSelectField = ({ value, isMultiple, arr, label, ...props }: any) => {
         {...field}
         {...props}
         multiple={isMultiple ? "multiple" : undefined}
-        value={isMultiple ? value : undefined}
+        // value={isMultiple ? value : undefined}
+        // value={value}
       >
         <option value="" hidden>
           select
         </option>
-        {arr.map((item: string) => (
+        {arr.sort().map((item: string) => (
           <option key={item} value={item}>
             {item}
           </option>

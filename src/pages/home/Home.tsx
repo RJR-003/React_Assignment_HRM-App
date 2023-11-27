@@ -3,23 +3,28 @@ import TableContent from "../../components/tableContent/TableContent";
 import { StyledHome } from "./Home.styled";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
-import { testData } from "../../core/config/testData";
-import { dataBaseData } from "../../core/config/type";
+import { ApiGetEmpData } from "../../core/config/type";
 import sortFun from "./sortFun";
 
-let initialSkillCheck = [
-  { id: "React", isCheck: false },
-  { id: "React Native", isCheck: false },
-  { id: "Angular", isCheck: false },
-  { id: "Node", isCheck: false },
-  { id: "HTML/CSS", isCheck: false },
-];
-
 export default function Home() {
-  const [check, setCheck] = useState(initialSkillCheck);
   const [searchInput, setSearchInput] = useState("");
-  const { empObj, setEmployeeArr } = useEmployeeContext();
   const [ascSort, setAscSort] = useState(true);
+  const { setEmployeeObj, initialEmpData } = useEmployeeContext();
+
+  const { skillObj } = useEmployeeContext();
+  let initialSkillCheck: { id: string; isCheck: boolean }[] = [];
+  skillObj?.forEach((elem) => {
+    let tempObj: { id: string; isCheck: boolean } = {
+      id: `${elem.skill}`,
+      isCheck: false,
+    };
+    initialSkillCheck.push(tempObj);
+  });
+
+  const [check, setCheck] = useState(initialSkillCheck);
+  useEffect(() => {
+    setCheck(initialSkillCheck);
+  }, [skillObj]);
 
   let checkObj = {
     check,
@@ -29,25 +34,26 @@ export default function Home() {
     ascSort,
     setAscSort,
   };
-
   useEffect(() => {
     let tempCheck = check;
     let checkedSkills = tempCheck
       .filter((item) => item.isCheck === true)
       .map((item) => item.id);
 
-    let filteredEmployee = testData.employee!;
+    let filteredEmployee = initialEmpData!;
 
     if (checkedSkills.length !== 0) {
-      filteredEmployee = filteredEmployee.filter((employee) =>
-        checkedSkills.every((skill) => employee.skills.includes(skill))
-      );
+      filteredEmployee = filteredEmployee.filter((employee) => {
+        let skillArr = employee.skills.map((each) => each.skill);
+        return checkedSkills.every((skill) => skillArr.includes(skill));
+      });
     }
 
     if (searchInput !== "") {
-      filteredEmployee = filteredEmployee.filter((item) =>
-        item.fullName.toLowerCase().includes(searchInput.toLowerCase())
-      );
+      filteredEmployee = filteredEmployee.filter((item) => {
+        let fullName = item.firstName + " " + item.lastName;
+        return fullName.toLowerCase().includes(searchInput.toLowerCase());
+      });
     }
     let dirFlag = 1;
     if (!ascSort) {
@@ -55,31 +61,29 @@ export default function Home() {
     }
     filteredEmployee = sortFun(filteredEmployee, dirFlag)!;
 
-    let changedObj: dataBaseData = {
-      ...empObj,
-      employee: filteredEmployee!,
-    };
+    let changedArr: ApiGetEmpData[] = [...filteredEmployee];
     if (
       checkedSkills.length == 0 &&
       filteredEmployee?.length === 0 &&
       searchInput === ""
     ) {
-      changedObj = testData;
+      changedArr = initialEmpData!;
     }
-    console.log(changedObj.employee);
-    setEmployeeArr!(changedObj);
+    setEmployeeObj!(changedArr);
   }, [check, searchInput, ascSort]);
 
   function handleSkillClick(skill: string) {
-    initialSkillCheck = initialSkillCheck.map((item) => {
-      if (item.id === skill) return { ...item, isCheck: !item.isCheck };
+    initialSkillCheck = check.map((item) => {
+      if (item.id === skill) {
+        return { ...item, isCheck: !item.isCheck };
+      }
       return item;
     });
     setCheck(initialSkillCheck);
   }
 
   function handleClearFilter() {
-    initialSkillCheck = initialSkillCheck.map((item) => {
+    initialSkillCheck = check.map((item) => {
       return { ...item, isCheck: false };
     });
     setCheck(initialSkillCheck);
@@ -98,6 +102,7 @@ export default function Home() {
         clearFun={handleClearFilter}
         skillClickFun={handleSkillClick}
         checkObj={checkObj}
+        searchValue={searchInput}
       />
       <TableContent sortObj={sortObj} />
     </StyledHome>

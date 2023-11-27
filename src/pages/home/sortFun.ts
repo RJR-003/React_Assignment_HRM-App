@@ -1,10 +1,11 @@
-import { employee } from "../../core/config/type";
+import { ApiGetEmpData } from "../../core/config/type";
 
-export const sortFun = (FilterArr: employee[], dirFlag: number) => {
+export const sortFun = (FilterArr: ApiGetEmpData[], dirFlag: number) => {
   let arrayToSort = FilterArr;
+
   let arrToRender = arrayToSort?.sort((a, b) => {
-    const name1 = a.fullName.toLowerCase();
-    const name2 = b.fullName.toLowerCase();
+    const name1 = (a.firstName + " " + a.lastName).toLowerCase();
+    const name2 = (b.firstName + " " + b.lastName).toLowerCase();
 
     let comparison = 0;
 

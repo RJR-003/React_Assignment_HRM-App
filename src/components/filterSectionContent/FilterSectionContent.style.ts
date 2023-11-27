@@ -73,6 +73,8 @@ export const StyledFilterSectionContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow: scroll;
+    max-height: 500px;
   }
 
   .skill-element {
@@ -82,8 +84,10 @@ export const StyledFilterSectionContent = styled.div`
     border: 3px solid var(--border-accent);
     border-radius: 10px;
     box-shadow: 1px 1px 10px var(--box-shadow);
+    max-width: 210px;
+    display: flex;
+    align-items: center;
   }
-
   .skill-element:hover {
     background-color: var(--hover-accent);
   }
@@ -94,7 +98,15 @@ export const StyledFilterSectionContent = styled.div`
   }
 
   .skill-element input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+  }
+  .skill-loader-container {
+    margin: 0 20px;
+    padding: 20px;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
