@@ -1,6 +1,6 @@
 export const constants = {
   delMsg: "Are you sure you want to proceed with the action?",
-  baseUrl: import.meta.env.VITE_baseUrl,
+  baseUrl: import.meta.env.VITE_BASEURL,
   getPostEmpUrl: "/employee",
   getRoleUrl: "/roles",
   getDeptUrl: "/departments",
