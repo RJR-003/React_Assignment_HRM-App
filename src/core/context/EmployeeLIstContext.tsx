@@ -10,10 +10,12 @@ import {
   ApiGetEmpData,
   ApiGetRoleData,
   ApiGetSkillData,
+  loadingType,
 } from "../config/type";
 import { employeeList } from "../config/type";
 import { constants } from "../config/constants";
-import useAxios from "../axios/axios";
+import useAxios, { getData } from "../axios/axios";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 export let employeeData = [
   {
@@ -35,6 +37,9 @@ export let employeeData = [
   },
 ];
 const EmployeeListContext = createContext<employeeList>({ employeeData });
+const initialLoadingState: loadingType = {
+  empLoading: true,
+};
 
 export function EmployeeProvider({ children }: { children: ReactNode }) {
   const [empObj, setEmpObj] = useState(employeeData);
@@ -43,24 +48,40 @@ export function EmployeeProvider({ children }: { children: ReactNode }) {
   const [renderSkillList, setRenderSkillList] = useState<ApiGetSkillData[]>([]);
   const [deptObj, setDeptObj] = useState<ApiGetDeptData[]>([]);
   const [roleObj, setRoleObj] = useState<ApiGetRoleData[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [loadingState, setloadingState] = useState(initialLoadingState);
+  const [empCount, setEmpCount] = useState(0);
+  const navigation = useLocation();
 
-  const deptGetData = useAxios({
+  const setLoadState = (obj: loadingType) => {
+    setloadingState(obj);
+  };
+
+  const {
+    response: deptGetResponse,
+    loading: deptGetLoading,
+    error: deptGetError,
+  } = useAxios({
     method: "get",
     url: constants.getDeptUrl,
   });
-  const roleGetData = useAxios({
+  const {
+    response: roleGetResponse,
+    loading: roleGetLoading,
+    error: roleGetError,
+  } = useAxios({
     method: "get",
     url: constants.getRoleUrl,
   });
 
   useEffect(() => {
-    if (deptGetData.response !== null) {
-      setDeptObj(deptGetData.response);
+    if (deptGetResponse !== null) {
+      setDeptObj(deptGetResponse);
     }
-    if (roleGetData.response !== null) {
-      setRoleObj(roleGetData.response);
+    if (roleGetResponse !== null) {
+      setRoleObj(roleGetResponse);
     }
-  }, [deptGetData.response, roleGetData.response]);
+  }, [deptGetResponse, roleGetResponse]);
 
   const setEmployeeObj = (arr: ApiGetEmpData[]) => {
     setEmpObj([...arr]);
@@ -71,17 +92,55 @@ export function EmployeeProvider({ children }: { children: ReactNode }) {
   const setSkillList = (arr: ApiGetSkillData[]) => {
     setRenderSkillList(arr);
   };
-  const empGetData = useAxios({
-    method: "get",
-    url: constants.getPostEmpUrl,
-  });
+  function updateSearchParams(params: { offset: string; page: string }) {
+    setSearchParams!({
+      ...Object.fromEntries(searchParams!.entries()),
+      ...params,
+    });
+  }
 
-  useEffect(() => {
-    if (empGetData.response !== null) {
-      setEmployeeObj(empGetData.response.data.employees);
-      setInitialEmployeeData(empGetData.response.data.employees);
+  const fetchEmpData = async () => {
+    const navStat = navigation.pathname.split("/")[1];
+    if (
+      navStat !== "view-employee" &&
+      navStat !== "add-employee" &&
+      navStat !== "update-employee"
+    ) {
+      let currPage = searchParams.get("page") || "1";
+      let ascSorty = searchParams.get("sortDir") || "asc";
+      if (ascSorty !== "asc" && ascSorty !== "desc") {
+        ascSorty = "asc";
+      }
+      if (Number(currPage) < 1) {
+        currPage = "1";
+      }
+
+      setLoadState({ empLoading: true });
+      let offset = Number(constants.pageLimit) * (Number(currPage) - 1);
+      const params = {
+        offset: String(offset),
+        page: String(currPage),
+        sortDir: ascSorty,
+      };
+      updateSearchParams(params);
+
+      try {
+        const res = await getData(
+          `${constants.getPostEmpUrl}?limit=${constants.pageLimit}&offset=${offset}&sortBy=firstName&sortDir=${ascSorty}`
+        );
+        console.log(res.data.data.employees, "response of get after updating");
+        setEmployeeObj!(res.data.data.employees);
+        setInitialEmployeeData!(res.data.data.employees);
+        setEmpCount(res.data.data.count);
+      } catch (err) {
+        setLoadState({ empLoading: false });
+        console.log("error while fetching employee for table", err);
+      }
     }
-  }, [empGetData.response]);
+  };
+  useEffect(() => {
+    fetchEmpData();
+  }, [searchParams]);
 
   const skillGetData = useAxios({
     method: "get",
@@ -100,12 +159,18 @@ export function EmployeeProvider({ children }: { children: ReactNode }) {
     initialEmpData,
     empObj,
     setEmployeeObj,
-    empLoading: empGetData.loading,
     renderSkillList,
     setSkillList,
     deptObj,
     roleObj,
     setInitialEmployeeData,
+    loadingState,
+    setLoadState,
+    empCount,
+    deptGetLoading,
+    deptGetError,
+    roleGetError,
+    roleGetLoading,
   };
 
   return (

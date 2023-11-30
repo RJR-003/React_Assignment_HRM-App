@@ -74,7 +74,7 @@ export const StyledFilterSectionContent = styled.div`
     flex-direction: column;
     gap: 10px;
     overflow: scroll;
-    max-height: 500px;
+    max-height: 460px;
   }
 
   .skill-element {

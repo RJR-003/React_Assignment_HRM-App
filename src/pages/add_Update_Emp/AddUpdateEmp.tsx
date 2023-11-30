@@ -3,14 +3,14 @@ import defaultProfileImg from "../../assets/images/profile.png";
 import SkillChip from "../../components/skillChip/SkillChip";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ApiGetEmpData,
   formValues,
   initialEmpDetailsType,
   returnFormValues,
 } from "../../core/config/type";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TextInput from "./TextInput";
 import FormSelectField from "./FormSelectField";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
@@ -21,8 +21,8 @@ import useAxios, {
 } from "../../core/axios/axios";
 import { constants } from "../../core/config/constants";
 import { toast } from "react-toastify";
-const tempLoc: string[] = ["Trivandrum", "Delhi"];
-let initialEmpDetails: initialEmpDetailsType = {
+import { uploadImage } from "../Firebase/firebaseConfig";
+const initialEmpDetails: initialEmpDetailsType = {
   email: "",
   fullName: "",
   dob: "",
@@ -38,42 +38,92 @@ function AddUpdateEmp() {
   const navigation = useLocation();
   const [image, setImage] = useState("");
   const [currData, setCurrData] = useState<ApiGetEmpData>();
+  const [uploadUrl, setUploadUrl] = useState("");
 
-  const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const image = e.target.files && e.target.files[0];
-    if (image) {
-      const imageUrl = URL.createObjectURL(image);
+  const fileUploadHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const imagefile = e.target.files && e.target.files[0];
+    if (imagefile) {
+      const imageUrl = URL.createObjectURL(imagefile);
       setImage(imageUrl);
+      try {
+        const url = await uploadImage(imagefile);
+        setUploadUrl(url);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+  // if (uploadUrl == "") {
+  //   setUploadUrl(
+  //     "https://firebasestorage.googleapis.com/v0/b/hrm-app-39bd9.appspot.com/o/profile.png?alt=media&token=4ada6a72-942c-46d7-9ace-351487a49639"
+  //   );
+  // }
   const currId = navigation.pathname.split("/")[2];
 
-  const currEmp = useAxios({
+  const {
+    response: currEmpResponse,
+    loading: currEmpLoading,
+    error: currEmpError,
+  } = useAxios({
     method: "get",
     url: `${constants.getPostEmpUrl}/${currId}`,
   });
   useEffect(() => {
-    if (currEmp.response !== null) {
-      console.log("currEmp.response", currEmp.response.data);
-      setCurrData(currEmp.response.data);
+    if (currEmpResponse !== null) {
+      console.log("currEmp.response", currEmpResponse.data);
+      setCurrData(currEmpResponse.data);
     }
-  }, [currEmp.response]);
+  }, [currEmpResponse]);
+  let updateViewImg: string;
+  try {
+    updateViewImg = JSON.parse(currData?.moreDetails).photoId;
+    if (updateViewImg === "") {
+      updateViewImg = defaultProfileImg;
+    }
+  } catch {
+    updateViewImg = defaultProfileImg;
+  }
 
-  const imageSrc = defaultProfileImg;
-  console.log(currData, "currdata");
+  const imageSrc = updateViewImg;
   const [addedSkills, setAddedSkills] = useState<string[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { deptObj, roleObj, skillObj, setEmployeeObj, setInitialEmployeeData } =
-    useEmployeeContext();
-  let deptArr = deptObj?.map((each) => each.department);
-  let roleArr = roleObj?.map((each) => each.role);
-  let skillArr = skillObj?.map((each) => each.skill);
+  const {
+    deptObj,
+    roleObj,
+    skillObj,
+    setEmployeeObj,
+    setInitialEmployeeData,
+    deptGetLoading,
+    deptGetError,
+    roleGetError,
+    roleGetLoading,
+  } = useEmployeeContext();
+  const deptArr = useMemo(
+    () => deptObj?.map((each) => each.department),
+    [deptObj]
+  );
+  const roleArr = useMemo(() => roleObj?.map((each) => each.role), [roleObj]);
+  const skillArr = useMemo(
+    () => skillObj?.map((each) => each.skill),
+    [skillObj]
+  );
+  const locArr = useMemo(
+    () => constants.location.map((each) => each.location),
+    []
+  );
 
+  function updateSearchParams(params: { offset?: string; page: string }) {
+    setSearchParams!({
+      ...Object.fromEntries(searchParams!.entries()),
+      ...params,
+    });
+  }
   function handleSelectSkill(e: MouseEvent) {
-    let target = e.target as HTMLElement;
-    let selectValue: string = (target as HTMLSelectElement).value;
+    const target = e.target as HTMLElement;
+    const selectValue: string = (target as HTMLSelectElement).value;
     if (selectValue) {
-      let selectedSkills: string[] = addedSkills;
+      const selectedSkills: string[] = addedSkills;
       if (!selectedSkills.includes(selectValue)) {
         selectedSkills.push(selectValue);
         setAddedSkills([...selectedSkills]);
@@ -82,8 +132,14 @@ function AddUpdateEmp() {
   }
 
   function handleSkillChipClick(item: string) {
-    let tempArr = addedSkills.filter((each) => each !== item);
+    const tempArr = addedSkills.filter((each) => each !== item);
     setAddedSkills([...tempArr]);
+  }
+  let initialLoc: string;
+  try {
+    initialLoc = JSON.parse(currData?.moreDetails).location;
+  } catch {
+    initialLoc = "";
   }
 
   const isAdd = navigation.pathname.split("/")[1] == "add-employee";
@@ -96,7 +152,7 @@ function AddUpdateEmp() {
     initialEmpDetails.Department = currData!.department
       ? currData.department.department
       : "";
-    initialEmpDetails.location = tempLoc[0];
+    initialEmpDetails.location = initialLoc;
   } else {
     initialEmpDetails.email = "";
     initialEmpDetails.fullName = "";
@@ -108,23 +164,24 @@ function AddUpdateEmp() {
   }
   useEffect(() => {
     if (!isAdd && currData) {
-      let currSkills = currData?.skills.map((each) => each.skill)!;
+      const currSkills = currData.skills.map((each) => each.skill)!;
       setAddedSkills([...currSkills]);
     }
-  }, [currData]);
+  }, [currData, isAdd]);
   console.log(initialEmpDetails, "initialEmpDetails");
 
   const handleSubmitObj = (values: formValues): returnFormValues => {
-    let returnRole = roleObj!
+    const returnRole = roleObj!
       .filter((each) => each.role === values.role)
       .map((each) => each.id)[0];
-    let returnDept = deptObj!
+    const returnDept = deptObj!
       .filter((each) => each.department === values.Department)
       .map((each) => each.id)[0];
-    let returnSkills = skillObj
-      ?.filter((each) => addedSkills.includes(each.skill))
+    const returnSkills = skillObj!
+      .filter((each) => addedSkills.includes(each.skill))
       .map((each) => each.id)!;
-    let returnObj = {
+    const returnLoc = values.location;
+    const returnObj = {
       email: values.email,
       firstName: values.fullName,
       dob: values.dob,
@@ -132,13 +189,16 @@ function AddUpdateEmp() {
       role: returnRole,
       department: returnDept,
       skills: returnSkills,
+      moreDetails: JSON.stringify({ location: returnLoc, photoId: uploadUrl }),
     };
     return returnObj;
   };
 
   const fetchEmpData = async () => {
     try {
-      const res = await getData(constants.getPostEmpUrl);
+      const res = await getData(
+        `${constants.getPostEmpUrl}?limit=${constants.pageLimit}&offset=0&sortBy=firstName&sortDir=asc`
+      );
       console.log(res.data.data.employees, "response of get after updating");
       setEmployeeObj!(res.data.data.employees);
       setInitialEmployeeData!(res.data.data.employees);
@@ -177,6 +237,7 @@ function AddUpdateEmp() {
           });
         } finally {
           navigate("/");
+          updateSearchParams({ page: "1" });
         }
       };
       postFormData();
@@ -212,11 +273,107 @@ function AddUpdateEmp() {
           });
         } finally {
           navigate("/");
+          updateSearchParams({ page: "1" });
         }
       };
       patchFormData();
     }
   }
+
+  let formBody: JSX.Element;
+  if (currEmpLoading) {
+    formBody = <div>loading...</div>;
+  } else if (currEmpError) {
+    formBody = <div>{currEmpError}</div>;
+  } else
+    formBody = (
+      <Form>
+        <figure className="data-entry-modal-figure">
+          <img
+            className="data-entry-modal-img"
+            src={isAdd ? image || defaultProfileImg : image || imageSrc}
+            alt="employee profile"
+          />
+        </figure>
+
+        <TextInput
+          label="Full Name"
+          name="fullName"
+          type="text"
+          placeholder="Enter full name"
+        />
+        <TextInput
+          label="E-Mail"
+          name="email"
+          type="text"
+          placeholder="Enter your e-mail"
+        />
+
+        <StyledEntryFormRow>
+          <TextInput label="Date of Join" name="doj" type="date" />
+          <TextInput label="Date of Birth" type="date" name="dob" />
+        </StyledEntryFormRow>
+        <StyledEntryFormRow>
+          {deptGetLoading ? (
+            <div>loading ...</div>
+          ) : deptGetError ? (
+            <div>{deptGetError}</div>
+          ) : (
+            <FormSelectField
+              label="Department"
+              name="Department"
+              arr={deptArr}
+            />
+          )}
+
+          {roleGetLoading ? (
+            <div>loading ...</div>
+          ) : roleGetError ? (
+            <div>{roleGetError}</div>
+          ) : (
+            <FormSelectField arr={roleArr} label="Role" name="role" />
+          )}
+        </StyledEntryFormRow>
+        <div className="form-location-profile">
+          <TextInput
+            label="Profile-upload"
+            name="profileUpload"
+            type="file"
+            style={{ maxWidth: "250px" }}
+            onChange={fileUploadHandler}
+            accept="image/*"
+          />
+
+          <FormSelectField arr={locArr} label="Location" name="location" />
+        </div>
+        <div className="form-skill">
+          <div>
+            <p>Skills</p>
+            <div className="added-skills">
+              {addedSkills.map(
+                (item) =>
+                  item && (
+                    <SkillChip
+                      onClick={() => handleSkillChipClick(item)}
+                      key={item}
+                      label={item}
+                      isView={false}
+                    />
+                  )
+              )}
+            </div>
+          </div>
+          <FormSelectField
+            isMultiple={true}
+            onClick={(e: MouseEvent) => handleSelectSkill(e)}
+            arr={skillArr}
+            name="skill"
+          />
+        </div>
+
+        <button type="submit">submit</button>
+      </Form>
+    );
 
   return (
     <Formik
@@ -239,92 +396,13 @@ function AddUpdateEmp() {
       onSubmit={(values, { setSubmitting }) => {
         console.log(values, "values of the form");
         console.log(addedSkills, "addedSkils");
-        let submitObj = handleSubmitObj(values);
+        const submitObj = handleSubmitObj(values);
         console.log(submitObj, "final submit object");
         handleFormSubmit(submitObj);
         setSubmitting(false);
       }}
     >
-      <StyledEntryForm>
-        {currEmp.loading ? (
-          <div>loading...</div>
-        ) : (
-          <Form>
-            <figure className="data-entry-modal-figure">
-              <img
-                className="data-entry-modal-img"
-                src={isAdd ? image || defaultProfileImg : image || imageSrc}
-                alt="employee profile"
-              />
-            </figure>
-
-            <TextInput
-              label="Full Name"
-              name="fullName"
-              type="text"
-              placeholder="Enter full name"
-            />
-            <TextInput
-              label="E-Mail"
-              name="email"
-              type="text"
-              placeholder="Enter your e-mail"
-            />
-
-            <StyledEntryFormRow>
-              <TextInput label="Date of Join" name="doj" type="date" />
-              <TextInput label="Date of Birth" type="date" name="dob" />
-            </StyledEntryFormRow>
-            <StyledEntryFormRow>
-              <FormSelectField
-                label="Department"
-                name="Department"
-                arr={deptArr}
-              />
-              <FormSelectField arr={roleArr} label="Role" name="role" />
-            </StyledEntryFormRow>
-            <div className="form-location-profile">
-              <TextInput
-                label="Profile-upload"
-                name="profileUpload"
-                type="file"
-                style={{ maxWidth: "250px" }}
-                onChange={fileUploadHandler}
-                accept="image/*"
-              />
-
-              <FormSelectField arr={tempLoc} label="Location" name="location" />
-            </div>
-            <div className="form-skill">
-              <div>
-                <p>Skills</p>
-                <div className="added-skills">
-                  {addedSkills.map(
-                    (item) =>
-                      item && (
-                        <SkillChip
-                          onClick={() => handleSkillChipClick(item)}
-                          key={item}
-                          label={item}
-                          isView={false}
-                        />
-                      )
-                  )}
-                </div>
-              </div>
-              <FormSelectField
-                isMultiple={true}
-                // value={[skillArr]}
-                onClick={(e: MouseEvent) => handleSelectSkill(e)}
-                arr={skillArr}
-                name="skill"
-              />
-            </div>
-
-            <button type="submit">submit</button>
-          </Form>
-        )}
-      </StyledEntryForm>
+      <StyledEntryForm>{formBody}</StyledEntryForm>
     </Formik>
   );
 }

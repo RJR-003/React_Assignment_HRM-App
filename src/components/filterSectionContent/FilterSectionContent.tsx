@@ -5,7 +5,7 @@ import clrFilterLogo from "../../assets/images/clear-filter.svg";
 import Button from "../button/Button";
 import InputField from "../inputField/InputField";
 import { filterSectionContentProps } from "../../core/config/type";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 
 export default function FilterSectionContent({
@@ -13,14 +13,16 @@ export default function FilterSectionContent({
   clearFun,
   skillClickFun,
   checkObj,
-  searchValue,
+  searchValue = "",
 }: filterSectionContentProps) {
   const { skillObj, skillLoading, renderSkillList, setSkillList } =
     useEmployeeContext();
+  const [skillSearchVal, setSkillSearchVal] = useState("");
 
   function handleSkillSearch(e: ChangeEvent) {
     const target = e.target as HTMLInputElement;
     let searchVal = target.value;
+    setSkillSearchVal(searchVal);
     let tempArr = skillObj;
     if (searchVal != "") {
       tempArr = tempArr?.filter((item) =>
@@ -28,6 +30,11 @@ export default function FilterSectionContent({
       );
     }
     setSkillList!([...tempArr!]);
+  }
+  function handleClearFilter() {
+    setSkillSearchVal("");
+    clearFun();
+    setSkillList!(skillObj!);
   }
   return (
     <StyledFilterSectionContent>
@@ -52,10 +59,11 @@ export default function FilterSectionContent({
               type="text"
               placeholder="Search Skill"
               onChange={handleSkillSearch}
+              value={skillSearchVal}
             />
           </form>
           <Button
-            onClick={clearFun}
+            onClick={handleClearFilter}
             src={clrFilterLogo}
             alt="clear-filter-log"
           />

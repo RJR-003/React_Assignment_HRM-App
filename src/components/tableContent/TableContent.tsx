@@ -6,25 +6,48 @@ import viewImgIcon from "../../assets/images/view-img.svg";
 import editImgIcon from "../../assets/images/edit-img.svg";
 import delImgIcon from "../../assets/images/del-img.svg";
 import Button from "../button/Button";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import DeleteModal from "../deleteModal/DeleteModal";
-import { tableContentProps } from "../../core/config/type";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 import { deleteData, getData } from "../../core/axios/axios";
 import { constants } from "../../core/config/constants";
 import { toast } from "react-toastify";
+import PaginationContainer from "../paginationContent/PaginationContainer";
 
-export default function TableContent({ sortObj }: tableContentProps) {
+export default function TableContent() {
   const [idToDel, setIdToDel] = useState("");
-  const { setEmployeeObj, setInitialEmployeeData } = useEmployeeContext();
+  const [ascSort, setAscSort] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { setEmployeeObj, setInitialEmployeeData, empObj, loadingState } =
+    useEmployeeContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let sortDirection = searchParams.get("sortDir");
+    if (sortDirection === "asc") {
+      setAscSort(true);
+    } else if (sortDirection === "desc") {
+      setAscSort(false);
+    }
+  }, [searchParams]);
+
+  function updateSearchParams(params: {
+    offset?: string;
+    page?: string;
+    sortDir?: string;
+  }) {
+    setSearchParams!({
+      ...Object.fromEntries(searchParams!.entries()),
+      ...params,
+    });
+  }
   function handleDelClick(id: string) {
     setIdToDel(id);
   }
-  const fetchEmpData = async () => {
+  const fetchEmpData = async (url: string) => {
     try {
-      const res = await getData(constants.getPostEmpUrl);
+      const res = await getData(url);
       console.log(res.data.data.employees, "response of get after updating");
       setEmployeeObj!(res.data.data.employees);
       setInitialEmployeeData!(res.data.data.employees);
@@ -41,7 +64,7 @@ export default function TableContent({ sortObj }: tableContentProps) {
     try {
       const res = await deleteData(`${constants.getPostEmpUrl}/${id}`);
       console.log(res.data, "response from delete api");
-      fetchEmpData();
+      fetchEmpData(constants.getPostEmpUrl);
       toast.update(delToast, {
         render: "Successfully Deleted",
         type: toast.TYPE.SUCCESS,
@@ -71,10 +94,9 @@ export default function TableContent({ sortObj }: tableContentProps) {
     setIdToDel("");
   }
 
-  const { empObj, empLoading } = useEmployeeContext();
-
   function handleSortFun() {
-    sortObj.setAscSort(!sortObj.ascSort);
+    let tempDir = ascSort ? "desc" : "asc";
+    updateSearchParams({ sortDir: tempDir });
   }
 
   return (
@@ -96,7 +118,7 @@ export default function TableContent({ sortObj }: tableContentProps) {
                 <img
                   className="sort-button"
                   onClick={handleSortFun}
-                  src={sortObj.ascSort ? downArrow : upArrow}
+                  src={ascSort ? downArrow : upArrow}
                   alt="arrow"
                 />
               </th>
@@ -106,7 +128,7 @@ export default function TableContent({ sortObj }: tableContentProps) {
             </tr>
           </thead>
           <tbody>
-            {empLoading ? (
+            {loadingState?.empLoading ? (
               <tr className="data-row">
                 <td colSpan={5}>loading...</td>
               </tr>
@@ -151,6 +173,7 @@ export default function TableContent({ sortObj }: tableContentProps) {
             )}
           </tbody>
         </table>
+        <PaginationContainer />
       </StyledTableContent>
       {idToDel && (
         <DeleteModal

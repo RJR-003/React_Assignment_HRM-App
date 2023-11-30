@@ -95,4 +95,25 @@ export const StyledTableContent = styled.div`
   .sort-button:hover {
     transform: scale(1.2);
   }
+  .pagination-container {
+    display: flex;
+    align-items: center;
+    align-self: center;
+  }
+  .pagination-container img {
+    cursor: pointer;
+  }
+  .pagination-container img:hover {
+    transform: scale(1.2);
+  }
+  .pagination-container * {
+    width: 35px;
+    height: auto;
+  }
+  .pagination-container input {
+    text-align: center;
+  }
+  .disabled {
+    cursor: none;
+  }
 `;

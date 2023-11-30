@@ -76,4 +76,9 @@ export const StyledViewPage = styled.div`
   .view-skill-box {
     overflow-y: scroll;
   }
+  .img {
+    width: 250px;
+    height: 300px;
+    border-radius: 5%;
+  }
 `;

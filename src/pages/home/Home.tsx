@@ -4,12 +4,10 @@ import { StyledHome } from "./Home.styled";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 import { ApiGetEmpData } from "../../core/config/type";
-import sortFun from "./sortFun";
 
 export default function Home() {
   const [searchInput, setSearchInput] = useState("");
-  const [ascSort, setAscSort] = useState(true);
-  const { setEmployeeObj, initialEmpData } = useEmployeeContext();
+  const { setEmployeeObj, initialEmpData, setLoadState } = useEmployeeContext();
 
   const { skillObj } = useEmployeeContext();
   let initialSkillCheck: { id: string; isCheck: boolean }[] = [];
@@ -20,7 +18,7 @@ export default function Home() {
     };
     initialSkillCheck.push(tempObj);
   });
-
+  console.log(searchInput, "searchInput");
   const [check, setCheck] = useState(initialSkillCheck);
   useEffect(() => {
     setCheck(initialSkillCheck);
@@ -30,11 +28,9 @@ export default function Home() {
     check,
     setCheck,
   };
-  let sortObj = {
-    ascSort,
-    setAscSort,
-  };
+
   useEffect(() => {
+    console.log("inside use Effect of home");
     let tempCheck = check;
     let checkedSkills = tempCheck
       .filter((item) => item.isCheck === true)
@@ -55,11 +51,6 @@ export default function Home() {
         return fullName.toLowerCase().includes(searchInput.toLowerCase());
       });
     }
-    let dirFlag = 1;
-    if (!ascSort) {
-      dirFlag = -1;
-    }
-    filteredEmployee = sortFun(filteredEmployee, dirFlag)!;
 
     let changedArr: ApiGetEmpData[] = [...filteredEmployee];
     if (
@@ -69,8 +60,10 @@ export default function Home() {
     ) {
       changedArr = initialEmpData!;
     }
+    console.log(changedArr, "changedArray inside useEffect");
     setEmployeeObj!(changedArr);
-  }, [check, searchInput, ascSort]);
+    setLoadState!({ empLoading: false });
+  }, [check, searchInput, initialEmpData]);
 
   function handleSkillClick(skill: string) {
     initialSkillCheck = check.map((item) => {
@@ -92,19 +85,24 @@ export default function Home() {
   function handleSearchInput(e: ChangeEvent) {
     const target = e.target as HTMLInputElement;
     let searchVal = target.value;
-    setSearchInput(searchVal.toLowerCase());
+    setSearchInput(searchVal);
   }
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
-    <StyledHome>
-      <FilterSectionContent
-        SearchFun={handleSearchInput}
-        clearFun={handleClearFilter}
-        skillClickFun={handleSkillClick}
-        checkObj={checkObj}
-        searchValue={searchInput}
-      />
-      <TableContent sortObj={sortObj} />
-    </StyledHome>
+    <>
+      <StyledHome>
+        <FilterSectionContent
+          SearchFun={handleSearchInput}
+          clearFun={handleClearFilter}
+          skillClickFun={handleSkillClick}
+          checkObj={checkObj}
+          searchValue={searchInput}
+        />
+        <TableContent />
+      </StyledHome>
+    </>
   );
 }

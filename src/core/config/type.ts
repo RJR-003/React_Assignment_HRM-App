@@ -24,22 +24,19 @@ export type initialEmpDetailsType = {
   fullName: string;
   dob: string;
   doj: string;
-  // profileUpload: string;
   role: string;
   Department: string;
   location: string;
   skill: string;
 };
-// export type employeeList = {
-//   testData?: dataBaseData;
-//   empObj?: dataBaseData;
-//   setEmployeeArr?: (arr: dataBaseData) => void;
-// };
+
+export type loadingType = {
+  empLoading: boolean;
+};
 export type employeeList = {
   employeeData?: ApiGetEmpData[];
   empObj?: ApiGetEmpData[];
   setEmployeeObj?: (arr: ApiGetEmpData[]) => void;
-  empLoading?: boolean;
   skillLoading?: boolean;
   initialEmpData?: ApiGetEmpData[];
   skillObj?: ApiGetSkillData[];
@@ -48,7 +45,17 @@ export type employeeList = {
   deptObj?: ApiGetDeptData[];
   roleObj?: ApiGetRoleData[];
   setInitialEmployeeData?: (arr: ApiGetEmpData[]) => void;
+  loadingState?: { empLoading: boolean };
+  setLoadState?: (obj: loadingType) => void;
+  empCount?: number;
+  ascSort?: boolean;
+  setAscSortFun?: (bool: boolean) => void;
+  deptGetLoading?: boolean;
+  deptGetError?: string;
+  roleGetLoading?: boolean;
+  roleGetError?: string;
 };
+
 export type formValues = {
   email: string;
   fullName: string;
@@ -67,6 +74,7 @@ export type returnFormValues = {
   role: number;
   department: number;
   skills: number[];
+  moreDetails: string;
 };
 export type ApiGetEmpData = {
   id: number;

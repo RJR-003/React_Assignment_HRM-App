@@ -3,6 +3,7 @@ import Home from "../../pages/home/Home";
 import EmpDetails from "../../pages/emp_Details/EmpDetails";
 import AddUpdateEmp from "../../pages/add_Update_Emp/AddUpdateEmp";
 import Layout from "../../layout/Layout";
+import ErrorPage from "../../pages/errorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
       { path: "/add-employee", element: <AddUpdateEmp /> },
       { path: "/update-employee/:id", element: <AddUpdateEmp /> },
     ],
+    errorElement: <ErrorPage />,
   },
 ]);
 
