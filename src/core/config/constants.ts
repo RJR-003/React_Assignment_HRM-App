@@ -1,12 +1,11 @@
 export const constants = {
   delMsg: "Are you sure you want to proceed with the action?",
-  baseUrl: "https://vipinms.cloud",
+  baseUrl: import.meta.env.VITE_baseUrl,
   getPostEmpUrl: "/employee",
   getRoleUrl: "/roles",
   getDeptUrl: "/departments",
   getSkillsUrl: "/skills",
   pageLimit: "7",
-  // baseUrl: "http://3.145.178.76:4000",
   location: [
     {
       id: "L1",
