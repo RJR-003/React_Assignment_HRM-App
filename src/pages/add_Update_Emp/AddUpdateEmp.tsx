@@ -343,11 +343,11 @@ function AddUpdateEmp() {
             <p>Skills</p>
             <div className="added-skills">
               {addedSkills.map(
-                (item) =>
+                (item, index) =>
                   item && (
                     <SkillChip
                       onClick={() => handleSkillChipClick(item)}
-                      key={item}
+                      key={index}
                       label={item}
                       isView={false}
                     />
