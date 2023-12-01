@@ -92,7 +92,7 @@ export default function FilterSectionContent({
                     type="checkbox"
                     checked={
                       checkObj.check.find((each: any) => each.id === item.skill)
-                        ?.isCheck
+                        ?.isCheck || false
                     }
                     readOnly
                   />

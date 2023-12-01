@@ -25,12 +25,9 @@ export default function EmpDetails() {
 
   useEffect(() => {
     if (currEmpResponse !== null) {
-      console.log("currEmp.response", currEmpResponse.data);
-      console.log(currEmpResponse);
       setViewData(currEmpResponse.data);
     }
   }, [currEmpResponse]);
-  console.log(currEmpResponse, "resposnse");
   const leftViewContent: string[] = [
     "Employee ID:",
     "Name:",
@@ -42,7 +39,7 @@ export default function EmpDetails() {
   let displayImg: string;
   try {
     displayImg = JSON.parse(viewData?.moreDetails).photoId;
-    if (displayImg === "") {
+    if (displayImg === "" || displayImg === null || displayImg === undefined) {
       displayImg = defaultImg;
     }
   } catch {
@@ -51,6 +48,9 @@ export default function EmpDetails() {
   let displayLoc: string;
   try {
     displayLoc = JSON.parse(viewData?.moreDetails).location;
+    if (displayLoc === "" || displayLoc === null || displayLoc === undefined) {
+      displayLoc = "N/A";
+    }
   } catch {
     displayLoc = "N/A";
   }

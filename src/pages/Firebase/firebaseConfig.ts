@@ -33,6 +33,6 @@ export const uploadImage = async (file: any): Promise<string> => {
     return await getDownloadURL(snapshot.ref);
   } catch (err) {
     console.error(err);
-    throw new Error("Image upload failed");
+    return Promise.reject("Error in uploading");
   }
 };

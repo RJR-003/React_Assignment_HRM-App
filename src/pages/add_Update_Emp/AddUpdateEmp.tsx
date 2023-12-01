@@ -10,7 +10,7 @@ import {
   initialEmpDetailsType,
   returnFormValues,
 } from "../../core/config/type";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import TextInput from "./TextInput";
 import FormSelectField from "./FormSelectField";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
@@ -22,7 +22,7 @@ import useAxios, {
 import { constants } from "../../core/config/constants";
 import { toast } from "react-toastify";
 import { uploadImage } from "../Firebase/firebaseConfig";
-const initialEmpDetails: initialEmpDetailsType = {
+let initialEmpDetails: initialEmpDetailsType = {
   email: "",
   fullName: "",
   dob: "",
@@ -32,7 +32,6 @@ const initialEmpDetails: initialEmpDetailsType = {
   location: "",
   skill: "",
 };
-
 function AddUpdateEmp() {
   const navigate = useNavigate();
   const navigation = useLocation();
@@ -53,11 +52,7 @@ function AddUpdateEmp() {
       }
     }
   };
-  // if (uploadUrl == "") {
-  //   setUploadUrl(
-  //     "https://firebasestorage.googleapis.com/v0/b/hrm-app-39bd9.appspot.com/o/profile.png?alt=media&token=4ada6a72-942c-46d7-9ace-351487a49639"
-  //   );
-  // }
+
   const currId = navigation.pathname.split("/")[2];
 
   const {
@@ -70,14 +65,17 @@ function AddUpdateEmp() {
   });
   useEffect(() => {
     if (currEmpResponse !== null) {
-      console.log("currEmp.response", currEmpResponse.data);
       setCurrData(currEmpResponse.data);
     }
   }, [currEmpResponse]);
   let updateViewImg: string;
   try {
     updateViewImg = JSON.parse(currData?.moreDetails).photoId;
-    if (updateViewImg === "") {
+    if (
+      updateViewImg === "" ||
+      updateViewImg === null ||
+      updateViewImg === undefined
+    ) {
       updateViewImg = defaultProfileImg;
     }
   } catch {
@@ -99,16 +97,13 @@ function AddUpdateEmp() {
     roleGetError,
     roleGetLoading,
   } = useEmployeeContext();
-  const deptArr = useMemo(
+  let deptArr = useMemo(
     () => deptObj?.map((each) => each.department),
     [deptObj]
   );
-  const roleArr = useMemo(() => roleObj?.map((each) => each.role), [roleObj]);
-  const skillArr = useMemo(
-    () => skillObj?.map((each) => each.skill),
-    [skillObj]
-  );
-  const locArr = useMemo(
+  let roleArr = useMemo(() => roleObj?.map((each) => each.role), [roleObj]);
+  let skillArr = useMemo(() => skillObj?.map((each) => each.skill), [skillObj]);
+  let locArr = useMemo(
     () => constants.location.map((each) => each.location),
     []
   );
@@ -120,10 +115,10 @@ function AddUpdateEmp() {
     });
   }
   function handleSelectSkill(e: MouseEvent) {
-    const target = e.target as HTMLElement;
-    const selectValue: string = (target as HTMLSelectElement).value;
+    let target = e.target as HTMLElement;
+    let selectValue: string = (target as HTMLSelectElement).value;
     if (selectValue) {
-      const selectedSkills: string[] = addedSkills;
+      let selectedSkills: string[] = addedSkills;
       if (!selectedSkills.includes(selectValue)) {
         selectedSkills.push(selectValue);
         setAddedSkills([...selectedSkills]);
@@ -132,7 +127,7 @@ function AddUpdateEmp() {
   }
 
   function handleSkillChipClick(item: string) {
-    const tempArr = addedSkills.filter((each) => each !== item);
+    let tempArr = addedSkills.filter((each) => each !== item);
     setAddedSkills([...tempArr]);
   }
   let initialLoc: string;
@@ -164,24 +159,23 @@ function AddUpdateEmp() {
   }
   useEffect(() => {
     if (!isAdd && currData) {
-      const currSkills = currData.skills.map((each) => each.skill)!;
+      let currSkills = currData?.skills.map((each) => each.skill)!;
       setAddedSkills([...currSkills]);
     }
   }, [currData, isAdd]);
-  console.log(initialEmpDetails, "initialEmpDetails");
 
   const handleSubmitObj = (values: formValues): returnFormValues => {
-    const returnRole = roleObj!
+    let returnRole = roleObj!
       .filter((each) => each.role === values.role)
       .map((each) => each.id)[0];
-    const returnDept = deptObj!
+    let returnDept = deptObj!
       .filter((each) => each.department === values.Department)
       .map((each) => each.id)[0];
-    const returnSkills = skillObj!
-      .filter((each) => addedSkills.includes(each.skill))
+    let returnSkills = skillObj
+      ?.filter((each) => addedSkills.includes(each.skill))
       .map((each) => each.id)!;
-    const returnLoc = values.location;
-    const returnObj = {
+    let returnLoc = values.location;
+    let returnObj = {
       email: values.email,
       firstName: values.fullName,
       dob: values.dob,
@@ -227,7 +221,6 @@ function AddUpdateEmp() {
             closeOnClick: true,
           });
         } catch (err) {
-          console.log("Error in posting data", err);
           toast.update(addToast, {
             render: "Error In Adding...",
             type: toast.TYPE.ERROR,
@@ -263,7 +256,6 @@ function AddUpdateEmp() {
             closeOnClick: true,
           });
         } catch (error) {
-          console.log(error, "error in updating");
           toast.update(updateToast, {
             render: "Error In Updating...",
             type: toast.TYPE.ERROR,
@@ -280,7 +272,7 @@ function AddUpdateEmp() {
     }
   }
 
-  let formBody: JSX.Element;
+  let formBody: React.JSX.Element;
   if (currEmpLoading) {
     formBody = <div>loading...</div>;
   } else if (currEmpError) {
@@ -394,10 +386,7 @@ function AddUpdateEmp() {
         location: Yup.string().required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values, "values of the form");
-        console.log(addedSkills, "addedSkils");
-        const submitObj = handleSubmitObj(values);
-        console.log(submitObj, "final submit object");
+        let submitObj = handleSubmitObj(values);
         handleFormSubmit(submitObj);
         setSubmitting(false);
       }}

@@ -1,7 +1,7 @@
 import FilterSectionContent from "../../components/filterSectionContent/FilterSectionContent";
 import TableContent from "../../components/tableContent/TableContent";
 import { StyledHome } from "./Home.styled";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import { useEmployeeContext } from "../../core/context/EmployeeLIstContext";
 import { ApiGetEmpData } from "../../core/config/type";
 
@@ -10,15 +10,15 @@ export default function Home() {
   const { setEmployeeObj, initialEmpData, setLoadState } = useEmployeeContext();
 
   const { skillObj } = useEmployeeContext();
-  let initialSkillCheck: { id: string; isCheck: boolean }[] = [];
-  skillObj?.forEach((elem) => {
-    let tempObj: { id: string; isCheck: boolean } = {
+
+  let initialSkillCheck: { id: string; isCheck: boolean }[] = useMemo(() => {
+    if (!skillObj) return [];
+    return skillObj.map((elem) => ({
       id: `${elem.skill}`,
       isCheck: false,
-    };
-    initialSkillCheck.push(tempObj);
-  });
-  console.log(searchInput, "searchInput");
+    }));
+  }, [skillObj]);
+
   const [check, setCheck] = useState(initialSkillCheck);
   useEffect(() => {
     setCheck(initialSkillCheck);
@@ -30,7 +30,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    console.log("inside use Effect of home");
     let tempCheck = check;
     let checkedSkills = tempCheck
       .filter((item) => item.isCheck === true)
@@ -60,7 +59,6 @@ export default function Home() {
     ) {
       changedArr = initialEmpData!;
     }
-    console.log(changedArr, "changedArray inside useEffect");
     setEmployeeObj!(changedArr);
     setLoadState!({ empLoading: false });
   }, [check, searchInput, initialEmpData]);
